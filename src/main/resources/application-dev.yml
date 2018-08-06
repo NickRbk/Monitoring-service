@@ -1,5 +1,5 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:32778/monitoring-service
+    url: jdbc:postgresql://localhost:32783/monitoring-service
     username: postgres
     password: postgres
