@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:32778/monitoring-service
+    username: postgres
+    password: postgres
