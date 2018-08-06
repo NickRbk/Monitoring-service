@@ -26,9 +26,9 @@ public class User extends DateAudit {
 
     @Column(name = "last_name")
     private String lastName;
-//
-//    @OneToOne
-//    @OnDelete(action = OnDeleteAction.CASCADE)
-//    @JoinColumn(name = "social_media_id", nullable = false)
-//    private SocialMedia socialMedia;
+
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
+    @JoinColumn(name = "social_media_id")
+    private SocialMedia socialMedia;
 }

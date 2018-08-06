@@ -4,12 +4,13 @@ import com.petproject.monitoring.domain.model.SocialMedia;
 import com.petproject.monitoring.domain.model.User;
 
 public class EntityAdapter {
-    public static User getUserFromDTO(Long userId, UserDTO userDTO) {
+    public static User getUserFromDTO(Long userId, SocialMedia sm, UserDTO userDTO) {
         return User.builder()
                 .id(userId)
                 .email(userDTO.getEmail())
                 .firstName(userDTO.getFirstName())
                 .lastName(userDTO.getLastName())
+                .socialMedia(sm)
                 .build();
     }
 
