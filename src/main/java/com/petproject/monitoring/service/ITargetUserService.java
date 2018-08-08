@@ -5,7 +5,7 @@ import com.petproject.monitoring.web.dto.UserDTO;
 
 import java.util.List;
 
-public interface IUserService {
+public interface ITargetUserService {
     List<TargetUser> getUsers();
     void add(UserDTO userDTO);
     void update(Long userId, UserDTO userDTO);

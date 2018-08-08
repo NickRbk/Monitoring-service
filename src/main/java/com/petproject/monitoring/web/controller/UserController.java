@@ -2,7 +2,7 @@ package com.petproject.monitoring.web.controller;
 
 import com.petproject.monitoring.domain.model.TargetUser;
 import com.petproject.monitoring.service.ITwitterProfileService;
-import com.petproject.monitoring.service.IUserService;
+import com.petproject.monitoring.service.ITargetUserService;
 import com.petproject.monitoring.web.dto.SocialAliasDTO;
 import com.petproject.monitoring.web.dto.UserDTO;
 import lombok.AllArgsConstructor;
@@ -19,8 +19,8 @@ import java.util.List;
 @RequestMapping("/api/users")
 @AllArgsConstructor
 public class UserController {
-    private IUserService userService;
-    private ITwitterProfileService smService;
+    private ITargetUserService userService;
+    private ITwitterProfileService twitterProfileService;
 
     @GetMapping
     public List<TargetUser> getUsers() {
@@ -50,6 +50,6 @@ public class UserController {
     @PostMapping("{userId}/media")
     public void addSocialMediaResources(@PathVariable Long userId,
                                         @RequestBody @NotNull @Valid SocialAliasDTO smDTO) {
-        smService.save(userId, smDTO);
+        twitterProfileService.save(userId, smDTO);
     }
 }
