@@ -1,7 +1,9 @@
 package com.petproject.monitoring.web.controller;
 
 import com.petproject.monitoring.domain.model.User;
+import com.petproject.monitoring.service.ISocialMediaService;
 import com.petproject.monitoring.service.IUserService;
+import com.petproject.monitoring.web.dto.SocialMediaDTO;
 import com.petproject.monitoring.web.dto.UserDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 public class UserController {
     private IUserService userService;
+    private ISocialMediaService smService;
 
     @GetMapping
     public List<User> getUsers() {
@@ -41,5 +44,12 @@ public class UserController {
     @DeleteMapping("/{userId}")
     public void deleteUser(@PathVariable Long userId) {
         userService.delete(userId);
+    }
+
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PostMapping("{userId}/media")
+    public void addSocialMediaResources(@PathVariable Long userId,
+                                        @RequestBody @NotNull @Valid SocialMediaDTO smDTO) {
+        smService.save(userId, smDTO);
     }
 }

@@ -34,6 +34,7 @@ public class TweetService implements ITweetService {
         boolean isRetweeted = status.getRetweetedStatus() != null;
 
         return Tweet.builder()
+                .id(status.getId())
                 .createdAt(status.getCreatedAt())
                 .text(isRetweeted
                         ? status.getRetweetedStatus().getText()

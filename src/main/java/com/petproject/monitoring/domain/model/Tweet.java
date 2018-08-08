@@ -16,7 +16,7 @@ import java.util.Date;
 public class Tweet {
 //    @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
+    private Long id;
 
 //    @Column(name = "created_at")
     private Date createdAt;

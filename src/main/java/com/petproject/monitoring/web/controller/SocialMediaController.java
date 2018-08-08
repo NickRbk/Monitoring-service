@@ -15,21 +15,13 @@ import java.util.List;
 
 @Validated
 @RestController
-@RequestMapping("/api/users/{userId}/media")
+@RequestMapping("/api/media")
 @AllArgsConstructor
 public class SocialMediaController {
-    private ISocialMediaService smService;
     private ITweetService tweetService;
 
     @GetMapping
-    public List<Tweet> getTweets(@PathVariable Long userId) {
+    public List<Tweet> getTweets() {
         return tweetService.getTweets();
-    }
-
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    @PostMapping()
-    public void addSocialMediaResources(@PathVariable Long userId,
-                                        @RequestBody @NotNull @Valid SocialMediaDTO smDTO) {
-        smService.save(userId, smDTO);
     }
 }
