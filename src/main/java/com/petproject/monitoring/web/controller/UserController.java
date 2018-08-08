@@ -1,9 +1,9 @@
 package com.petproject.monitoring.web.controller;
 
 import com.petproject.monitoring.domain.model.TargetUser;
-import com.petproject.monitoring.service.ISocialMediaService;
+import com.petproject.monitoring.service.ITwitterProfileService;
 import com.petproject.monitoring.service.IUserService;
-import com.petproject.monitoring.web.dto.SocialMediaDTO;
+import com.petproject.monitoring.web.dto.SocialAliasDTO;
 import com.petproject.monitoring.web.dto.UserDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 public class UserController {
     private IUserService userService;
-    private ISocialMediaService smService;
+    private ITwitterProfileService smService;
 
     @GetMapping
     public List<TargetUser> getUsers() {
@@ -49,7 +49,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping("{userId}/media")
     public void addSocialMediaResources(@PathVariable Long userId,
-                                        @RequestBody @NotNull @Valid SocialMediaDTO smDTO) {
+                                        @RequestBody @NotNull @Valid SocialAliasDTO smDTO) {
         smService.save(userId, smDTO);
     }
 }

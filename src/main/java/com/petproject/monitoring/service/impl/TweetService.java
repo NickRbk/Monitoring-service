@@ -24,8 +24,10 @@ public class TweetService implements ITweetService {
         List<Tweet> tweets = new ArrayList<>();
         targetUsers.forEach(u -> {
             try {
-                ResponseList<Status> userTimeline = twitter.timelines().getUserTimeline(u.getSocialMedia().getTwitterUrl());
-                userTimeline.forEach(status -> tweets.add(getTweet(u.getId(), status)));
+                ResponseList<Status> userTimeline = twitter.timelines().getUserTimeline(
+                        u.getSocialMedia().getTwitterProfile().getTwitterUser().getScreenName()
+                );
+                userTimeline.forEach(status -> tweets.add(getTweet(status)));
             } catch (TwitterException e) {
                 log.error(e.getErrorMessage());
             }
@@ -33,13 +35,12 @@ public class TweetService implements ITweetService {
         return tweets;
     }
 
-    private Tweet getTweet(Long userId, Status status) {
+    private Tweet getTweet(Status status) {
         boolean isRetweeted = status.getRetweetedStatus() != null;
 
         return Tweet.builder()
                 .id(status.getId())
-                .userId(userId)
-                .createdAt(status.getCreatedAt())
+                .createdAtTwitter(status.getCreatedAt())
                 .text(isRetweeted
                         ? status.getRetweetedStatus().getText()
                         : status.getText())
@@ -48,14 +49,14 @@ public class TweetService implements ITweetService {
                         : (isRetweeted && status.getRetweetedStatus().getURLEntities().length > 0)
                             ? status.getRetweetedStatus().getURLEntities()[0].getURL()
                             : null)
-                .favouriteCount(isRetweeted ? status.getRetweetedStatus().getFavoriteCount() : status.getFavoriteCount())
+                .favouritesCount(isRetweeted ? status.getRetweetedStatus().getFavoriteCount() : status.getFavoriteCount())
                 .retweetCount(isRetweeted
                         ? status.getRetweetedStatus().getRetweetCount()
                         : status.getRetweetCount())
                 .originalAuthor(isRetweeted
                         ? getTwitterUser(status.getRetweetedStatus().getUser())
                         : null)
-                .user(getTwitterUser(status.getUser())).build();
+                .targetUser(getTwitterUser(status.getUser())).build();
     }
 
     private TwitterUser getTwitterUser(User u) {
@@ -68,7 +69,7 @@ public class TweetService implements ITweetService {
                 .friendsCount(u.getFriendsCount())
                 .favouritesCount(u.getFavouritesCount())
                 .statusesCount(u.getStatusesCount())
-                .originalProfileImageURL(u.getOriginalProfileImageURL())
+                .profileImageURL(u.getOriginalProfileImageURL())
                 .build();
     }
 }

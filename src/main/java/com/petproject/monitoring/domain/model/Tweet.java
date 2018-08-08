@@ -18,7 +18,7 @@ public class Tweet extends DateAudit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at_t")
     private Date createdAtTwitter;
 
     private String text;

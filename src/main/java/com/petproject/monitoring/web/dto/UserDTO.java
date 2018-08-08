@@ -9,8 +9,6 @@ import javax.validation.constraints.NotNull;
 @Setter
 public class UserDTO {
     @NotNull
-    private String email;
-    @NotNull
     private String firstName;
     @NotNull
     private String lastName;

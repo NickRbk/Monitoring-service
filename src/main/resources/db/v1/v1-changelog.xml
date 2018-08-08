@@ -21,7 +21,7 @@
             <column name="USER_NAME" type="VARCHAR(40)">
                 <constraints nullable="false"/>
             </column>
-            <column name="SCREEN_NAME" type="VARCHAR(40)">
+            <column name="SCREEN_NAME" type="VARCHAR(100)">
                 <constraints nullable="false" unique="true" />
             </column>
             <column name="LOCATION" type="VARCHAR(40)">

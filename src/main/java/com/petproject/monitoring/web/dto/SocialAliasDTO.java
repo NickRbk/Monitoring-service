@@ -5,7 +5,6 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class SocialMediaDTO {
-    private String facebookUrl;
-    private String twitterUrl;
+public class SocialAliasDTO {
+    private String alias;
 }

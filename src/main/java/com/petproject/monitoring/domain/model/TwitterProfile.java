@@ -21,6 +21,6 @@ public class TwitterProfile {
     private Long targetUserId;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "twitter_alias")
+    @JoinColumn(name = "twitter_alias", referencedColumnName = "screen_name")
     private TwitterUser twitterUser;
 }

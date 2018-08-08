@@ -17,7 +17,7 @@
                              primaryKey="true"
                              primaryKeyName="social_media_id" />
             </column>
-            <column name="USER_ID" type="BIGINT">
+            <column name="TARGET_USER_ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
             <column name="TWITTER_PROFILE_ID" type="BIGINT">

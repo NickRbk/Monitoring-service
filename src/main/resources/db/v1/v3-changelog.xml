@@ -21,8 +21,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="TWITTER_ALIAS" type="VARCHAR(100)">
-                <constraints nullable="false"
-                             foreignKeyName="fk_twitter_alias"
+                <constraints foreignKeyName="fk_twitter_alias"
                              references="twitter_users(screen_name)" />
             </column>
         </createTable>
