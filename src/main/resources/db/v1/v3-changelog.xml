@@ -21,11 +21,9 @@
                 <constraints nullable="false"/>
             </column>
             <column name="TWITTER_ALIAS" type="VARCHAR(100)">
-                <constraints unique="true" nullable="false" />
-            </column>
-            <column name="TWITTER_USER_ID" type="BIGINT">
-                <constraints foreignKeyName="fk_twitter_user_id"
-                             references="twitter_users(id)" />
+                <constraints nullable="false"
+                             foreignKeyName="fk_twitter_alias"
+                             references="twitter_users(screen_name)" />
             </column>
         </createTable>
     </changeSet>

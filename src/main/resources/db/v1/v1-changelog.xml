@@ -17,15 +17,12 @@
                              primaryKey="true"
                              primaryKeyName="twitter_user_id" />
             </column>
-            <column name="TARGET_USER_ID" type="BIGINT">
-                <constraints nullable="true"/>
-            </column>
             <column name="IS_TARGET" type="BOOLEAN" defaultValue="false" />
             <column name="USER_NAME" type="VARCHAR(40)">
                 <constraints nullable="false"/>
             </column>
             <column name="SCREEN_NAME" type="VARCHAR(40)">
-                <constraints nullable="false"/>
+                <constraints nullable="false" unique="true" />
             </column>
             <column name="LOCATION" type="VARCHAR(40)">
                 <constraints nullable="true"/>
