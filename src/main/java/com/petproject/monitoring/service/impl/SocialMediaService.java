@@ -1,6 +1,6 @@
 package com.petproject.monitoring.service.impl;
 
-import com.petproject.monitoring.domain.model.User;
+import com.petproject.monitoring.domain.model.TargetUser;
 import com.petproject.monitoring.domain.repository.SocialMediaRepository;
 import com.petproject.monitoring.domain.repository.UserRepository;
 import com.petproject.monitoring.exception.NotFoundException;
@@ -10,8 +10,6 @@ import com.petproject.monitoring.web.dto.SocialMediaDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 @AllArgsConstructor
 public class SocialMediaService implements ISocialMediaService {
@@ -20,8 +18,8 @@ public class SocialMediaService implements ISocialMediaService {
 
     @Override
     public void save(Long userId, SocialMediaDTO smDTO) {
-        User user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
-        Long id = user.getSocialMedia().getId();
+        TargetUser targetUser = userRepository.findById(userId).orElseThrow(NotFoundException::new);
+        Long id = targetUser.getSocialMedia().getId();
         smRepository.save(EntityAdapter.getSocialMediaFromDTO(id, userId, smDTO));
     }
 }

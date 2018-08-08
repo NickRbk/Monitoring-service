@@ -26,7 +26,7 @@ public class TwitterUser {
 
     private Integer friendsCount;
 
-    private Integer favouritiesCount;
+    private Integer favouritesCount;
 
     private Integer statusesCount;
 

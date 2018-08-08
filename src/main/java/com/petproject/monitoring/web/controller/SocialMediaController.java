@@ -1,7 +1,7 @@
 package com.petproject.monitoring.web.controller;
 
+import com.petproject.monitoring.domain.model.TargetUser;
 import com.petproject.monitoring.domain.model.Tweet;
-import com.petproject.monitoring.domain.model.User;
 import com.petproject.monitoring.service.ITweetService;
 import com.petproject.monitoring.service.IUserService;
 import lombok.AllArgsConstructor;
@@ -22,7 +22,7 @@ public class SocialMediaController {
 
     @GetMapping
     public List<Tweet> getTweets() {
-        List<User> users = userService.getUsers();
-        return tweetService.getTweets(users);
+        List<TargetUser> targetUsers = userService.getUsers();
+        return tweetService.getTweets(targetUsers);
     }
 }

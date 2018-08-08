@@ -2,12 +2,12 @@
 
 ## Overview
 
-This web app provides ability to create users, attach to them links
-to social media and shows users posts in them.
+This web app provides ability to create targetUsers, attach to them links
+to social media and shows targetUsers posts in them.
 
-### User controller (`api/users`)
+### User controller (`api/targetUsers`)
 
-- `/` (GET) - get all users
+- `/` (GET) - get all targetUsers
 ```json
 [
     {
@@ -27,7 +27,7 @@ to social media and shows users posts in them.
 ]
 ```
 
-- `/` (POST) - save new user
+- `/` (POST) - save new targetUser
 ```json
 {
 	"email": "*****",
@@ -36,7 +36,7 @@ to social media and shows users posts in them.
 }
 ```
 
-- `/{userId}` (PATCH) - update user by id
+- `/{userId}` (PATCH) - update targetUser by id
 ```json
 {
 	"email": "*****",
@@ -45,11 +45,11 @@ to social media and shows users posts in them.
 }
 ```
 
-- `/{userId}` (DELETE) - delete user by id
+- `/{userId}` (DELETE) - delete targetUser by id
 
-### Social media controller (`api/users/{userId}/media`)
+### Social media controller (`api/targetUsers/{userId}/media`)
 
-- `/` (POST) - set social media links to user
+- `/` (POST) - set social media links to targetUser
 ```json
 {
 	"facebookUrl": "*****",

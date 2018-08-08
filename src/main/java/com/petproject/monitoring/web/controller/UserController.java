@@ -1,6 +1,6 @@
 package com.petproject.monitoring.web.controller;
 
-import com.petproject.monitoring.domain.model.User;
+import com.petproject.monitoring.domain.model.TargetUser;
 import com.petproject.monitoring.service.ISocialMediaService;
 import com.petproject.monitoring.service.IUserService;
 import com.petproject.monitoring.web.dto.SocialMediaDTO;
@@ -23,7 +23,7 @@ public class UserController {
     private ISocialMediaService smService;
 
     @GetMapping
-    public List<User> getUsers() {
+    public List<TargetUser> getUsers() {
         return userService.getUsers();
     }
 

@@ -1,11 +1,11 @@
 package com.petproject.monitoring.web.dto;
 
 import com.petproject.monitoring.domain.model.SocialMedia;
-import com.petproject.monitoring.domain.model.User;
+import com.petproject.monitoring.domain.model.TargetUser;
 
 public class EntityAdapter {
-    public static User getUserFromDTO(Long userId, SocialMedia sm, UserDTO userDTO) {
-        return User.builder()
+    public static TargetUser getUserFromDTO(Long userId, SocialMedia sm, UserDTO userDTO) {
+        return TargetUser.builder()
                 .id(userId)
                 .email(userDTO.getEmail())
                 .firstName(userDTO.getFirstName())

@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Builder
 @Entity
 @Table(name = "users")
-public class User extends DateAudit {
+public class TargetUser extends DateAudit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

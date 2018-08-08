@@ -7,4 +7,8 @@
 
     <!--Include here only cumulative changelog-->
     <include file="v1/v1-changelog.xml" relativeToChangelogFile="true" />
+    <include file="v1/v2-changelog.xml" relativeToChangelogFile="true" />
+    <include file="v1/v3-changelog.xml" relativeToChangelogFile="true" />
+    <include file="v1/v4-changelog.xml" relativeToChangelogFile="true" />
+    <include file="v1/v5-changelog.xml" relativeToChangelogFile="true" />
 </databaseChangeLog>
