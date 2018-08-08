@@ -1,16 +1,15 @@
 package com.petproject.monitoring.web.controller;
 
 import com.petproject.monitoring.domain.model.Tweet;
-import com.petproject.monitoring.service.ISocialMediaService;
+import com.petproject.monitoring.domain.model.User;
 import com.petproject.monitoring.service.ITweetService;
-import com.petproject.monitoring.web.dto.SocialMediaDTO;
+import com.petproject.monitoring.service.IUserService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Validated
@@ -19,9 +18,11 @@ import java.util.List;
 @AllArgsConstructor
 public class SocialMediaController {
     private ITweetService tweetService;
+    private IUserService userService;
 
     @GetMapping
     public List<Tweet> getTweets() {
-        return tweetService.getTweets();
+        List<User> users = userService.getUsers();
+        return tweetService.getTweets(users);
     }
 }

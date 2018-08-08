@@ -18,6 +18,7 @@ public class Tweet {
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long userId;
 //    @Column(name = "created_at")
     private Date createdAt;
 

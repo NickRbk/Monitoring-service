@@ -3,6 +3,7 @@ package com.petproject.monitoring.service.impl;
 import com.petproject.monitoring.domain.model.Tweet;
 import com.petproject.monitoring.domain.model.TwitterUser;
 import com.petproject.monitoring.service.ITweetService;
+import com.petproject.monitoring.service.IUserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,29 +20,32 @@ public class TweetService implements ITweetService {
     private Twitter twitter;
 
     @Override
-    public List<Tweet> getTweets() {
+    public List<Tweet> getTweets(List<com.petproject.monitoring.domain.model.User> users) {
         List<Tweet> tweets = new ArrayList<>();
-        try {
-            ResponseList<Status> userTimeline = twitter.timelines().getUserTimeline("ipreferespresso");
-            userTimeline.forEach(status -> tweets.add(getTweet(status)));
-        } catch (TwitterException e) {
-            log.error(e.getErrorMessage());
-        }
+        users.forEach(u -> {
+            try {
+                ResponseList<Status> userTimeline = twitter.timelines().getUserTimeline(u.getSocialMedia().getTwitterUrl());
+                userTimeline.forEach(status -> tweets.add(getTweet(u.getId(), status)));
+            } catch (TwitterException e) {
+                log.error(e.getErrorMessage());
+            }
+        });
         return tweets;
     }
 
-    private Tweet getTweet(Status status) {
+    private Tweet getTweet(Long userId, Status status) {
         boolean isRetweeted = status.getRetweetedStatus() != null;
 
         return Tweet.builder()
                 .id(status.getId())
+                .userId(userId)
                 .createdAt(status.getCreatedAt())
                 .text(isRetweeted
                         ? status.getRetweetedStatus().getText()
                         : status.getText())
                 .textUrl(status.getURLEntities().length > 0
                         ? status.getURLEntities()[0].getURL()
-                        : isRetweeted
+                        : (isRetweeted && status.getRetweetedStatus().getURLEntities().length > 0)
                             ? status.getRetweetedStatus().getURLEntities()[0].getURL()
                             : null)
                 .favouriteCount(isRetweeted ? status.getRetweetedStatus().getFavoriteCount() : status.getFavoriteCount())
