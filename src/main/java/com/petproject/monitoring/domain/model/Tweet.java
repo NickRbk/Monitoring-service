@@ -11,30 +11,32 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-//@Entity
-//@Table(name = "tweets")
-public class Tweet {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@Entity
+@Table(name = "tweets")
+public class Tweet extends DateAudit {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long userId;
-//    @Column(name = "created_at")
-    private Date createdAt;
+    @Column(name = "created_at")
+    private Date createdAtTwitter;
 
     private String text;
 
-//    @Column(name = "text_url")
+    @Column(name = "text_url")
     private String textUrl;
 
-//    @Column(name = "favourite_count")
-    private Integer favouriteCount;
+    @Column(name = "favourites_count")
+    private Integer favouritesCount;
 
-//    @Column(name = "retweet_count")
+    @Column(name = "retweet_count")
     private Integer retweetCount;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "original_author_id ")
     private TwitterUser originalAuthor;
 
-    private TwitterUser user;
-
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "twitter_user_id ")
+    private TwitterUser targetUser;
 }
