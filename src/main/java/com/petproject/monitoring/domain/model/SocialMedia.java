@@ -20,7 +20,7 @@ public class SocialMedia {
     private Long id;
 
     @Column(name = "target_user_id")
-    private Long userId;
+    private Long targetUserId;
 
     @OneToOne(cascade = CascadeType.REMOVE)
     @OnDelete(action = OnDeleteAction.NO_ACTION)

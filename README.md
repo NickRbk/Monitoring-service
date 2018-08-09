@@ -18,7 +18,7 @@ to social media and shows targetUsers posts in them.
         "lastName": "*****",
         "socialMedia": {
             "id": 3,
-            "userId": 3,
+            "targetUserId": 3,
             "twitterProfile": {
                 "id": 3,
                 "targetUserId": 3,

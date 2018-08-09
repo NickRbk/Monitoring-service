@@ -38,7 +38,7 @@ public class TargetUserService implements ITargetUserService {
         TwitterProfile twitterProfile = tpRepository.save(TwitterProfile.builder().targetUserId(targetUser.getId()).build());
         SocialMedia sm = smRepository.save(
                 SocialMedia.builder()
-                        .userId(targetUser.getId())
+                        .targetUserId(targetUser.getId())
                         .twitterProfile(twitterProfile)
                         .build());
         targetUserRepository.setSocialMediaRef(sm.getId(), targetUser.getId());

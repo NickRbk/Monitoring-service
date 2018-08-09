@@ -19,31 +19,31 @@ import java.util.List;
 @RequestMapping("/api/users")
 @AllArgsConstructor
 public class TargetUserController {
-    private ITargetUserService userService;
+    private ITargetUserService targetUserService;
     private ITwitterProfileService twitterProfileService;
 
     @GetMapping
     public List<TargetUser> getUsers() {
-        return userService.getUsers();
+        return targetUserService.getUsers();
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping()
     public void addUser(@RequestBody @NotNull @Valid TargetUserDTO targetUserDTO) {
-        userService.add(targetUserDTO);
+        targetUserService.add(targetUserDTO);
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PatchMapping("/{userId}")
     public void updateUser(@PathVariable Long userId,
                            @RequestBody @NotNull @Valid TargetUserDTO targetUserDTO) {
-        userService.update(userId, targetUserDTO);
+        targetUserService.update(userId, targetUserDTO);
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @DeleteMapping("/{userId}")
     public void deleteUser(@PathVariable Long userId) {
-        userService.delete(userId);
+        targetUserService.delete(userId);
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)

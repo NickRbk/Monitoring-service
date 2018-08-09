@@ -26,7 +26,7 @@ public class TwitterProfileService implements ITwitterProfileService {
     private Twitter twitter;
     private IEntityAdapterService entityAdapterService;
     private TargetUserRepository targetUserRepository;
-    private TwitterProfileRepository smRepository;
+    private TwitterProfileRepository tpRepository;
     private TwitterUserRepository tuRepository;
 
     @Override
@@ -46,6 +46,6 @@ public class TwitterProfileService implements ITwitterProfileService {
             twitterUser.setTarget(true);
             tuRepository.save(twitterUser);
         }
-        smRepository.setAlias(smDTO.getAlias(), targetUserId);
+        tpRepository.setAlias(smDTO.getAlias(), targetUserId);
     }
 }
