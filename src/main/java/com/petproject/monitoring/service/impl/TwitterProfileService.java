@@ -5,6 +5,7 @@ import com.petproject.monitoring.domain.repository.TwitterProfileRepository;
 import com.petproject.monitoring.domain.repository.TargetUserRepository;
 import com.petproject.monitoring.domain.repository.TwitterUserRepository;
 import com.petproject.monitoring.exception.NotFoundException;
+import com.petproject.monitoring.service.IEntityAdapterService;
 import com.petproject.monitoring.service.ITwitterProfileService;
 import com.petproject.monitoring.web.dto.SocialAliasDTO;
 import lombok.AllArgsConstructor;
@@ -23,6 +24,7 @@ import java.util.Optional;
 public class TwitterProfileService implements ITwitterProfileService {
 
     private Twitter twitter;
+    private IEntityAdapterService entityAdapterService;
     private TargetUserRepository targetUserRepository;
     private TwitterProfileRepository smRepository;
     private TwitterUserRepository tuRepository;
@@ -35,18 +37,7 @@ public class TwitterProfileService implements ITwitterProfileService {
         if(!twitterUserOpt.isPresent()) {
             try {
                 User u = twitter.showUser(smDTO.getAlias());
-                TwitterUser newTwitterUser = TwitterUser.builder()
-                        .userName(u.getName())
-                        .screenName(u.getScreenName())
-                        .location(u.getLocation())
-                        .description(u.getDescription())
-                        .followersCount(u.getFollowersCount())
-                        .friendsCount(u.getFriendsCount())
-                        .favouritesCount(u.getFavouritesCount())
-                        .statusesCount(u.getStatusesCount())
-                        .isTarget(true)
-                        .profileImageURL(u.getOriginalProfileImageURL()).build();
-                tuRepository.save(newTwitterUser);
+                tuRepository.save(entityAdapterService.getTwitterUserFromAPI(u, true));
             } catch (TwitterException e) {
                 log.error(e.getErrorMessage());
             }

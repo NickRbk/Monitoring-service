@@ -7,8 +7,8 @@ import com.petproject.monitoring.domain.repository.SocialMediaRepository;
 import com.petproject.monitoring.domain.repository.TwitterProfileRepository;
 import com.petproject.monitoring.domain.repository.TargetUserRepository;
 import com.petproject.monitoring.exception.NotFoundException;
+import com.petproject.monitoring.service.IEntityAdapterService;
 import com.petproject.monitoring.service.ITargetUserService;
-import com.petproject.monitoring.web.dto.EntityAdapter;
 import com.petproject.monitoring.web.dto.UserDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +20,8 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class TargetUserService implements ITargetUserService {
+
+    private IEntityAdapterService entityAdapterService;
     private TargetUserRepository targetUserRepository;
     private SocialMediaRepository smRepository;
     private TwitterProfileRepository tpRepository;
@@ -32,7 +34,7 @@ public class TargetUserService implements ITargetUserService {
     @Override
     @Transactional
     public void add(UserDTO userDTO) {
-        TargetUser targetUser = targetUserRepository.save(EntityAdapter.getUserFromDTO(null, null, userDTO));
+        TargetUser targetUser = targetUserRepository.save(entityAdapterService.getUserFromDTO(null, null, userDTO));
         TwitterProfile twitterProfile = tpRepository.save(TwitterProfile.builder().targetUserId(targetUser.getId()).build());
         SocialMedia sm = smRepository.save(
                 SocialMedia.builder()
@@ -46,7 +48,7 @@ public class TargetUserService implements ITargetUserService {
     public void update(Long userId, UserDTO userDTO) {
         Optional<TargetUser> user = targetUserRepository.findById(userId);
         if(user.isPresent()) {
-            targetUserRepository.save(EntityAdapter.getUserFromDTO(userId, user.get().getSocialMedia(), userDTO));
+            targetUserRepository.save(entityAdapterService.getUserFromDTO(userId, user.get().getSocialMedia(), userDTO));
         } else throw new NotFoundException();
     }
 
