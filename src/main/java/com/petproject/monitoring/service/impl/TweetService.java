@@ -6,6 +6,7 @@ import com.petproject.monitoring.domain.repository.TweetRepository;
 import com.petproject.monitoring.exception.InvalidParameterException;
 import com.petproject.monitoring.service.IEntityAdapterService;
 import com.petproject.monitoring.service.ITweetService;
+import com.petproject.monitoring.sort.SortConstants;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -17,12 +18,10 @@ import twitter4j.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.petproject.monitoring.sort.SortConstants.SORT_CRITERIA;
-
 @Slf4j
 @Service
 @AllArgsConstructor
-public class TweetService implements ITweetService {
+public class TweetService implements ITweetService, SortConstants {
 
     private Twitter twitter;
     private IEntityAdapterService entityAdapterService;
@@ -48,7 +47,7 @@ public class TweetService implements ITweetService {
     @Override
     public Page<Tweet> getTweetsOrderByDate(String criteria, int page, int size) {
         if(isValidCriteria(criteria)) {
-            Sort sort = new Sort(Sort.Direction.valueOf(criteria.toUpperCase()), "created_at_t");
+            Sort sort = new Sort(Sort.Direction.valueOf(criteria.toUpperCase()), DATE_FIELD);
             return tweetRepository.findAllOrdered(PageRequest.of(page, size, sort));
         } else throw new InvalidParameterException();
     }
