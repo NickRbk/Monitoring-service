@@ -5,23 +5,39 @@
 This web app provides ability to create targetUsers, attach to them links
 to social media and shows targetUsers posts in them.
 
-### User controller (`api/targetUsers`)
+### User controller (`api/users`)
 
 - `/` (GET) - get all targetUsers
 ```json
 [
     {
-        "createdAt": "*****",
-        "updatedAt": "*****",
-        "id": 1,
-        "email": "*****",
+        "createdAt": "2018-08-09T11:12:18.106+0000",
+        "updatedAt": "2018-08-09T11:12:18.106+0000",
+        "id": 3,
         "firstName": "*****",
         "lastName": "*****",
         "socialMedia": {
-            "id": 1,
-            "userId": 1,
-            "facebookUrl": "*****",
-            "twitterUrl": "*****"
+            "id": 3,
+            "userId": 3,
+            "twitterProfile": {
+                "id": 3,
+                "targetUserId": 3,
+                "twitterUser": {
+                    "createdAt": "2018-08-09T11:17:32.235+0000",
+                    "updatedAt": "2018-08-09T11:17:32.235+0000",
+                    "id": 4,
+                    "userName": "*****",
+                    "screenName": "*****",
+                    "location": "*****",
+                    "description": "*****",
+                    "followersCount": 23,
+                    "friendsCount": 213,
+                    "favouritesCount": 34,
+                    "statusesCount": 123,
+                    "profileImageURL": "*****",
+                    "target": true
+                }
+            }
         }
     }
 ]
@@ -30,7 +46,6 @@ to social media and shows targetUsers posts in them.
 - `/` (POST) - save new targetUser
 ```json
 {
-	"email": "*****",
 	"firstName": "*****",
 	"lastName": "*****"
 }
@@ -39,7 +54,6 @@ to social media and shows targetUsers posts in them.
 - `/{userId}` (PATCH) - update targetUser by id
 ```json
 {
-	"email": "*****",
 	"firstName": "*****",
 	"lastName": "*****"
 }
@@ -47,16 +61,73 @@ to social media and shows targetUsers posts in them.
 
 - `/{userId}` (DELETE) - delete targetUser by id
 
-### Social media controller (`api/targetUsers/{userId}/media`)
-
-- `/` (POST) - set social media links to targetUser
+- `/{userId}/media` (POST) - set social media nickname to targetUser (like nickname at Twitter)
 ```json
 {
-	"facebookUrl": "*****",
-	"twitterUrl": "*****"
+	"alias": "*****"
 }
 ```
 
+### Social media controller (`api/media`)
+
+- `?page=?&size=?` (GET) - get posts of targeted users with pagination (set page and size value)
+```json
+{
+    "content": [
+        {
+            "createdAt": "2018-08-09T08:45:21.508+0000",
+            "updatedAt": "2018-08-09T08:50:16.639+0000",
+            "id": 23,
+            "createdAtTwitter": "2018-08-07T10:08:57.000+0000",
+            "text": "*****",
+            "textUrl": null,
+            "favouritesCount": 0,
+            "retweetCount": 0,
+            "originalAuthor": null,
+            "targetUser": {
+                "createdAt": "2018-08-09T08:45:13.273+0000",
+                "updatedAt": "2018-08-09T08:45:13.273+0000",
+                "id": 1,
+                "userName": "*****",
+                "screenName": "*****",
+                "location": "*****",
+                "description": "*****",
+                "followersCount": 23,
+                "friendsCount": 34,
+                "favouritesCount": 45,
+                "statusesCount": 65,
+                "profileImageURL": "*****",
+                "target": true
+            }
+        }
+    ],
+    "pageable": {
+        "sort": {
+            "sorted": false,
+            "unsorted": true
+        },
+        "offset": 0,
+        "pageNumber": 0,
+        "pageSize": 1,
+        "paged": true,
+        "unpaged": false
+    },
+    "last": false,
+    "totalElements": 60,
+    "totalPages": 60,
+    "size": 1,
+    "number": 0,
+    "sort": {
+        "sorted": false,
+        "unsorted": true
+    },
+    "first": true,
+    "numberOfElements": 1
+}
+```
+
+- `/sort?page=?&size=?&orderBy={HERE YOU CAN SET desc OR asc}` 
+(GET) - get ordered by creation date posts (set page, size value, and sort criteria: asc or desc)
 
 ## Prerequisites
 - app should be run with "dev" profile
