@@ -48,7 +48,7 @@ public class TweetService implements ITweetService, SortConstants {
     public Page<Tweet> getTweetsOrderByDate(String criteria, int page, int size) {
         if(isValidCriteria(criteria)) {
             Sort sort = new Sort(Sort.Direction.valueOf(criteria.toUpperCase()), DATE_FIELD);
-            return tweetRepository.findAllOrdered(PageRequest.of(page, size, sort));
+            return tweetRepository.findAll(PageRequest.of(page, size, sort));
         } else throw new InvalidParameterException();
     }
 
