@@ -4,7 +4,7 @@ import com.petproject.monitoring.domain.model.TargetUser;
 import com.petproject.monitoring.service.ITwitterProfileService;
 import com.petproject.monitoring.service.ITargetUserService;
 import com.petproject.monitoring.web.dto.SocialAliasDTO;
-import com.petproject.monitoring.web.dto.UserDTO;
+import com.petproject.monitoring.web.dto.TargetUserDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -29,15 +29,15 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping()
-    public void addUser(@RequestBody @NotNull @Valid UserDTO userDTO) {
-        userService.add(userDTO);
+    public void addUser(@RequestBody @NotNull @Valid TargetUserDTO targetUserDTO) {
+        userService.add(targetUserDTO);
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PatchMapping("/{userId}")
     public void updateUser(@PathVariable Long userId,
-                           @RequestBody @NotNull @Valid UserDTO userDTO) {
-        userService.update(userId, userDTO);
+                           @RequestBody @NotNull @Valid TargetUserDTO targetUserDTO) {
+        userService.update(userId, targetUserDTO);
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
