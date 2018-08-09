@@ -3,15 +3,21 @@ package com.petproject.monitoring.service.impl;
 import com.petproject.monitoring.domain.model.TargetUser;
 import com.petproject.monitoring.domain.model.Tweet;
 import com.petproject.monitoring.domain.repository.TweetRepository;
+import com.petproject.monitoring.exception.InvalidParameterException;
 import com.petproject.monitoring.service.IEntityAdapterService;
 import com.petproject.monitoring.service.ITweetService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import twitter4j.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.petproject.monitoring.sort.SortConstants.SORT_CRITERIA;
 
 @Slf4j
 @Service
@@ -23,7 +29,7 @@ public class TweetService implements ITweetService {
     private TweetRepository tweetRepository;
 
     @Override
-    public List<Tweet> getTweets(List<TargetUser> targetUsers) {
+    public Page<Tweet> getTweets(List<TargetUser> targetUsers, int page, int size) {
         List<Tweet> tweets = new ArrayList<>();
         targetUsers.forEach(u -> {
             try {
@@ -36,10 +42,23 @@ public class TweetService implements ITweetService {
             }
         });
         tweetRepository.saveAll(tweets);
-        return tweetRepository.findAll();
+        return tweetRepository.findAll(PageRequest.of(page, size));
+    }
+
+    @Override
+    public Page<Tweet> getTweetsOrderByDate(String criteria, int page, int size) {
+        if(isValidCriteria(criteria)) {
+            Sort sort = new Sort(Sort.Direction.valueOf(criteria.toUpperCase()), "created_at_t");
+            return tweetRepository.findAllOrdered(PageRequest.of(page, size, sort));
+        } else throw new InvalidParameterException();
     }
 
     private Tweet getTweet(Status status) {
         return entityAdapterService.getTweetFromAPI(status);
+    }
+
+    private boolean isValidCriteria(String criteria) {
+        return SORT_CRITERIA.stream()
+                .anyMatch(c -> c.equals(criteria));
     }
 }
