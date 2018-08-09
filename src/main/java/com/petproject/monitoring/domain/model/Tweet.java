@@ -15,7 +15,7 @@ import java.util.Date;
 @Table(name = "tweets")
 public class Tweet extends DateAudit {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(unique = true)
     private Long id;
 
     @Column(name = "created_at_t")
@@ -32,11 +32,11 @@ public class Tweet extends DateAudit {
     @Column(name = "retweet_count")
     private Integer retweetCount;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "original_author_id ")
     private TwitterUser originalAuthor;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "twitter_user_id ")
     private TwitterUser targetUser;
 }

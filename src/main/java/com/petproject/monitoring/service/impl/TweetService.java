@@ -3,6 +3,8 @@ package com.petproject.monitoring.service.impl;
 import com.petproject.monitoring.domain.model.TargetUser;
 import com.petproject.monitoring.domain.model.Tweet;
 import com.petproject.monitoring.domain.model.TwitterUser;
+import com.petproject.monitoring.domain.repository.TweetRepository;
+import com.petproject.monitoring.domain.repository.TwitterUserRepository;
 import com.petproject.monitoring.service.ITweetService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +13,7 @@ import twitter4j.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -18,6 +21,8 @@ import java.util.List;
 public class TweetService implements ITweetService {
 
     private Twitter twitter;
+    private TweetRepository tweetRepository;
+    private TwitterUserRepository twitterUserRepository;
 
     @Override
     public List<Tweet> getTweets(List<TargetUser> targetUsers) {
@@ -32,7 +37,9 @@ public class TweetService implements ITweetService {
                 log.error(e.getErrorMessage());
             }
         });
-        return tweets;
+        tweetRepository.saveAll(tweets);
+        return tweetRepository.findAll();
+//        return tweets;
     }
 
     private Tweet getTweet(Status status) {
@@ -60,7 +67,9 @@ public class TweetService implements ITweetService {
     }
 
     private TwitterUser getTwitterUser(User u) {
-        return TwitterUser.builder()
+        Optional<TwitterUser> twitterUser = twitterUserRepository.findByScreenName(u.getScreenName());
+        if(twitterUser.isPresent()) return twitterUser.get();
+        TwitterUser newTwitterUser = TwitterUser.builder()
                 .userName(u.getName())
                 .screenName(u.getScreenName())
                 .location(u.getLocation())
@@ -69,7 +78,7 @@ public class TweetService implements ITweetService {
                 .friendsCount(u.getFriendsCount())
                 .favouritesCount(u.getFavouritesCount())
                 .statusesCount(u.getStatusesCount())
-                .profileImageURL(u.getOriginalProfileImageURL())
-                .build();
+                .profileImageURL(u.getOriginalProfileImageURL()).build();
+        return twitterUserRepository.save(newTwitterUser);
     }
 }

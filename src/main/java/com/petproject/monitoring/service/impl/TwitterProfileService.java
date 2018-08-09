@@ -8,14 +8,21 @@ import com.petproject.monitoring.exception.NotFoundException;
 import com.petproject.monitoring.service.ITwitterProfileService;
 import com.petproject.monitoring.web.dto.SocialAliasDTO;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.User;
 
 import java.util.Optional;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class TwitterProfileService implements ITwitterProfileService {
+
+    private Twitter twitter;
     private TargetUserRepository targetUserRepository;
     private TwitterProfileRepository smRepository;
     private TwitterUserRepository tuRepository;
@@ -26,7 +33,23 @@ public class TwitterProfileService implements ITwitterProfileService {
         targetUserRepository.findById(targetUserId).orElseThrow(NotFoundException::new);
         Optional<TwitterUser> twitterUserOpt = tuRepository.findByScreenName(smDTO.getAlias());
         if(!twitterUserOpt.isPresent()) {
-            tuRepository.save(TwitterUser.builder().screenName(smDTO.getAlias()).isTarget(true).build());
+            try {
+                User u = twitter.showUser(smDTO.getAlias());
+                TwitterUser newTwitterUser = TwitterUser.builder()
+                        .userName(u.getName())
+                        .screenName(u.getScreenName())
+                        .location(u.getLocation())
+                        .description(u.getDescription())
+                        .followersCount(u.getFollowersCount())
+                        .friendsCount(u.getFriendsCount())
+                        .favouritesCount(u.getFavouritesCount())
+                        .statusesCount(u.getStatusesCount())
+                        .isTarget(true)
+                        .profileImageURL(u.getOriginalProfileImageURL()).build();
+                tuRepository.save(newTwitterUser);
+            } catch (TwitterException e) {
+                log.error(e.getErrorMessage());
+            }
         } else if(!twitterUserOpt.get().isTarget()) {
             TwitterUser twitterUser = twitterUserOpt.get();
             twitterUser.setTarget(true);

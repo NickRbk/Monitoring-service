@@ -18,12 +18,12 @@
                              primaryKeyName="twitter_user_id" />
             </column>
             <column name="IS_TARGET" type="BOOLEAN" defaultValue="false" />
-            <column name="USER_NAME" type="VARCHAR(40)" />
+            <column name="USER_NAME" type="VARCHAR(400)" />
             <column name="SCREEN_NAME" type="VARCHAR(100)">
                 <constraints nullable="false" unique="true" />
             </column>
-            <column name="LOCATION" type="VARCHAR(40)" />
-            <column name="DESCRIPTION" type="VARCHAR(40)" />
+            <column name="LOCATION" type="VARCHAR(400)" />
+            <column name="DESCRIPTION" type="VARCHAR(400)" />
             <column name="FOLLOWERS_COUNT" type="INT" />
             <column name="FRIENDS_COUNT" type="INT" />
             <column name="FAVOURITES_COUNT" type="INT" />
