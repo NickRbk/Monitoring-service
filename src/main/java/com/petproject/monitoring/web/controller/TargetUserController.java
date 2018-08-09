@@ -18,7 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/users")
 @AllArgsConstructor
-public class UserController {
+public class TargetUserController {
     private ITargetUserService userService;
     private ITwitterProfileService twitterProfileService;
 

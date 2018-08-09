@@ -6,7 +6,7 @@ import com.petproject.monitoring.domain.model.Tweet;
 import com.petproject.monitoring.domain.model.TwitterUser;
 import com.petproject.monitoring.domain.repository.TwitterUserRepository;
 import com.petproject.monitoring.service.IEntityAdapterService;
-import com.petproject.monitoring.web.dto.UserDTO;
+import com.petproject.monitoring.web.dto.TargetUserDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import twitter4j.Status;
@@ -21,11 +21,11 @@ public class EntityAdapterService implements IEntityAdapterService {
 
 
     @Override
-    public TargetUser getUserFromDTO(Long userId, SocialMedia sm, UserDTO userDTO) {
+    public TargetUser getUserFromDTO(Long userId, SocialMedia sm, TargetUserDTO targetUserDTO) {
         return TargetUser.builder()
                 .id(userId)
-                .firstName(userDTO.getFirstName())
-                .lastName(userDTO.getLastName())
+                .firstName(targetUserDTO.getFirstName())
+                .lastName(targetUserDTO.getLastName())
                 .socialMedia(sm).build();
     }
 

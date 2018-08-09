@@ -9,7 +9,7 @@ import com.petproject.monitoring.domain.repository.TargetUserRepository;
 import com.petproject.monitoring.exception.NotFoundException;
 import com.petproject.monitoring.service.IEntityAdapterService;
 import com.petproject.monitoring.service.ITargetUserService;
-import com.petproject.monitoring.web.dto.UserDTO;
+import com.petproject.monitoring.web.dto.TargetUserDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,8 +33,8 @@ public class TargetUserService implements ITargetUserService {
 
     @Override
     @Transactional
-    public void add(UserDTO userDTO) {
-        TargetUser targetUser = targetUserRepository.save(entityAdapterService.getUserFromDTO(null, null, userDTO));
+    public void add(TargetUserDTO targetUserDTO) {
+        TargetUser targetUser = targetUserRepository.save(entityAdapterService.getUserFromDTO(null, null, targetUserDTO));
         TwitterProfile twitterProfile = tpRepository.save(TwitterProfile.builder().targetUserId(targetUser.getId()).build());
         SocialMedia sm = smRepository.save(
                 SocialMedia.builder()
@@ -45,10 +45,10 @@ public class TargetUserService implements ITargetUserService {
     }
 
     @Override
-    public void update(Long userId, UserDTO userDTO) {
+    public void update(Long userId, TargetUserDTO targetUserDTO) {
         Optional<TargetUser> user = targetUserRepository.findById(userId);
         if(user.isPresent()) {
-            targetUserRepository.save(entityAdapterService.getUserFromDTO(userId, user.get().getSocialMedia(), userDTO));
+            targetUserRepository.save(entityAdapterService.getUserFromDTO(userId, user.get().getSocialMedia(), targetUserDTO));
         } else throw new NotFoundException();
     }
 
