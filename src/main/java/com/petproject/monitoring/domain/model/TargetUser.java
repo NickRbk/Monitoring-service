@@ -19,6 +19,9 @@ public class TargetUser extends DateAudit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "customer_id")
+    private Long customerId;
+
     @Column(name = "first_name")
     private String firstName;
 

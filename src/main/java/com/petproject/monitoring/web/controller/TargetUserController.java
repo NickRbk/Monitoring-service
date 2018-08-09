@@ -1,6 +1,7 @@
 package com.petproject.monitoring.web.controller;
 
 import com.petproject.monitoring.domain.model.TargetUser;
+import com.petproject.monitoring.service.IAuthService;
 import com.petproject.monitoring.service.ITwitterProfileService;
 import com.petproject.monitoring.service.ITargetUserService;
 import com.petproject.monitoring.web.dto.SocialAliasDTO;
@@ -14,6 +15,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+import static com.petproject.monitoring.security.SecurityConstants.HEADER_STRING;
+
 @Validated
 @RestController
 @RequestMapping("/api/users")
@@ -21,35 +24,39 @@ import java.util.List;
 public class TargetUserController {
     private ITargetUserService targetUserService;
     private ITwitterProfileService twitterProfileService;
+    private IAuthService authService;
 
     @GetMapping
-    public List<TargetUser> getUsers() {
-        return targetUserService.getUsers();
+    public List<TargetUser> getUsers(@RequestHeader(HEADER_STRING) String token) {
+        return targetUserService.getUsersByCustomerId(authService.getIdFromToken(token));
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping()
-    public void addUser(@RequestBody @NotNull @Valid TargetUserDTO targetUserDTO) {
-        targetUserService.add(targetUserDTO);
+    public void addUser(@RequestBody @NotNull @Valid TargetUserDTO targetUserDTO,
+                        @RequestHeader(HEADER_STRING) String token) {
+        targetUserService.add(authService.getIdFromToken(token), targetUserDTO);
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @PatchMapping("/{userId}")
-    public void updateUser(@PathVariable Long userId,
-                           @RequestBody @NotNull @Valid TargetUserDTO targetUserDTO) {
-        targetUserService.update(userId, targetUserDTO);
+    @PatchMapping("/{targetUserId}")
+    public void updateUser(@PathVariable Long targetUserId,
+                           @RequestBody @NotNull @Valid TargetUserDTO targetUserDTO,
+                           @RequestHeader(HEADER_STRING) String token) {
+        targetUserService.update(authService.getIdFromToken(token), targetUserId, targetUserDTO);
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @DeleteMapping("/{userId}")
-    public void deleteUser(@PathVariable Long userId) {
-        targetUserService.delete(userId);
+    @DeleteMapping("/{targetUserId}")
+    public void deleteUser(@PathVariable Long targetUserId,
+                           @RequestHeader(HEADER_STRING) String token) {
+        targetUserService.delete(authService.getIdFromToken(token), targetUserId);
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @PostMapping("{userId}/media")
-    public void addSocialMediaResources(@PathVariable Long userId,
+    @PostMapping("{targetUserId}/media")
+    public void addSocialMediaResources(@PathVariable Long targetUserId,
                                         @RequestBody @NotNull @Valid SocialAliasDTO smDTO) {
-        twitterProfileService.add(userId, smDTO);
+        twitterProfileService.add(targetUserId, smDTO);
     }
 }

@@ -1,13 +1,12 @@
 package com.petproject.monitoring.service.impl;
 
-import com.petproject.monitoring.domain.model.SocialMedia;
-import com.petproject.monitoring.domain.model.TargetUser;
-import com.petproject.monitoring.domain.model.Tweet;
-import com.petproject.monitoring.domain.model.TwitterUser;
+import com.petproject.monitoring.domain.model.*;
 import com.petproject.monitoring.domain.repository.TwitterUserRepository;
 import com.petproject.monitoring.service.IEntityAdapterService;
+import com.petproject.monitoring.web.dto.CustomerDTO;
 import com.petproject.monitoring.web.dto.TargetUserDTO;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import twitter4j.Status;
 import twitter4j.User;
@@ -19,11 +18,21 @@ import java.util.Optional;
 public class EntityAdapterService implements IEntityAdapterService {
     private TwitterUserRepository twitterUserRepository;
 
+    @Override
+    public Customer getCustomerFromDTO(CustomerDTO customerDTO, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        return Customer.builder()
+                .email(customerDTO.getEmail())
+                .firstName(customerDTO.getFirstName())
+                .lastName(customerDTO.getLastName())
+                .password(bCryptPasswordEncoder.encode(customerDTO.getPassword()))
+                .phoneNumber(customerDTO.getPhoneNumber()).build();
+    }
 
     @Override
-    public TargetUser getUserFromDTO(Long userId, SocialMedia sm, TargetUserDTO targetUserDTO) {
+    public TargetUser getUserFromDTO(Long customerId, Long targetUserId, SocialMedia sm, TargetUserDTO targetUserDTO) {
         return TargetUser.builder()
-                .id(userId)
+                .id(targetUserId)
+                .customerId(customerId)
                 .firstName(targetUserDTO.getFirstName())
                 .lastName(targetUserDTO.getLastName())
                 .socialMedia(sm).build();

@@ -6,8 +6,8 @@ import com.petproject.monitoring.web.dto.TargetUserDTO;
 import java.util.List;
 
 public interface ITargetUserService {
-    List<TargetUser> getUsers();
-    void add(TargetUserDTO targetUserDTO);
-    void update(Long userId, TargetUserDTO targetUserDTO);
-    void delete(Long userId);
+    List<TargetUser> getUsersByCustomerId(Long customerId);
+    void add(Long customerId, TargetUserDTO targetUserDTO);
+    void update(Long customerId, Long targetUserId, TargetUserDTO targetUserDTO);
+    void delete(Long customerId, Long targetUserId);
 }

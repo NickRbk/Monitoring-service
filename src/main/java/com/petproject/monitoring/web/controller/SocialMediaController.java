@@ -2,17 +2,17 @@ package com.petproject.monitoring.web.controller;
 
 import com.petproject.monitoring.domain.model.TargetUser;
 import com.petproject.monitoring.domain.model.Tweet;
+import com.petproject.monitoring.service.IAuthService;
 import com.petproject.monitoring.service.ITweetService;
 import com.petproject.monitoring.service.ITargetUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static com.petproject.monitoring.security.SecurityConstants.HEADER_STRING;
 
 @Validated
 @RestController
@@ -21,11 +21,13 @@ import java.util.List;
 public class SocialMediaController {
     private ITweetService tweetService;
     private ITargetUserService targetUserService;
+    private IAuthService authService;
 
     @GetMapping()
     public Page<Tweet> getTweets(@RequestParam("page") int page,
-                                 @RequestParam("size") int size) {
-        List<TargetUser> targetUsers = targetUserService.getUsers();
+                                 @RequestParam("size") int size,
+                                 @RequestHeader(HEADER_STRING) String token) {
+        List<TargetUser> targetUsers = targetUserService.getUsersByCustomerId(authService.getIdFromToken(token));
         return tweetService.getTweets(targetUsers, page, size);
     }
 

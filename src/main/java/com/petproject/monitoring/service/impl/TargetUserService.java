@@ -27,14 +27,15 @@ public class TargetUserService implements ITargetUserService {
     private TwitterProfileRepository tpRepository;
 
     @Override
-    public List<TargetUser> getUsers() {
-        return targetUserRepository.findAll();
+    public List<TargetUser> getUsersByCustomerId(Long customerId) {
+        return targetUserRepository.getAllByCustomerId(customerId);
     }
 
     @Override
     @Transactional
-    public void add(TargetUserDTO targetUserDTO) {
-        TargetUser targetUser = targetUserRepository.save(entityAdapterService.getUserFromDTO(null, null, targetUserDTO));
+    public void add(Long customerId, TargetUserDTO targetUserDTO) {
+        TargetUser targetUser = targetUserRepository.save(
+                entityAdapterService.getUserFromDTO(customerId, null, null, targetUserDTO));
         TwitterProfile twitterProfile = tpRepository.save(TwitterProfile.builder().targetUserId(targetUser.getId()).build());
         SocialMedia sm = smRepository.save(
                 SocialMedia.builder()
@@ -45,16 +46,18 @@ public class TargetUserService implements ITargetUserService {
     }
 
     @Override
-    public void update(Long userId, TargetUserDTO targetUserDTO) {
-        Optional<TargetUser> user = targetUserRepository.findById(userId);
+    public void update(Long customerId, Long targetUserId, TargetUserDTO targetUserDTO) {
+        Optional<TargetUser> user = targetUserRepository.findByIdAndCustomerId(targetUserId, customerId);
         if(user.isPresent()) {
-            targetUserRepository.save(entityAdapterService.getUserFromDTO(userId, user.get().getSocialMedia(), targetUserDTO));
+            targetUserRepository.save(entityAdapterService.getUserFromDTO(
+                    customerId, targetUserId, user.get().getSocialMedia(), targetUserDTO));
         } else throw new NotFoundException();
     }
 
     @Override
-    public void delete(Long userId) {
-        TargetUser targetUser = targetUserRepository.findById(userId).orElseThrow(NotFoundException::new);
+    public void delete(Long customerId, Long targetUserId) {
+        TargetUser targetUser = targetUserRepository.findByIdAndCustomerId(targetUserId, customerId)
+                .orElseThrow(NotFoundException::new);
         targetUserRepository.delete(targetUser);
     }
 }
