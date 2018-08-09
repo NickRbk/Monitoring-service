@@ -18,11 +18,11 @@ import java.util.List;
 @AllArgsConstructor
 public class SocialMediaController {
     private ITweetService tweetService;
-    private ITargetUserService userService;
+    private ITargetUserService targetUserService;
 
     @GetMapping
     public List<Tweet> getTweets() {
-        List<TargetUser> targetUsers = userService.getUsers();
+        List<TargetUser> targetUsers = targetUserService.getUsers();
         return tweetService.getTweets(targetUsers);
     }
 }

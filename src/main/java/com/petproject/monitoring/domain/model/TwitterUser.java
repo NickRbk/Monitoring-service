@@ -18,7 +18,7 @@ public class TwitterUser extends DateAudit {
     private Long id;
 
     @Column(name = "is_target")
-    private Boolean isTarget;
+    private boolean isTarget;
 
     @Column(name = "user_name")
     private String userName;

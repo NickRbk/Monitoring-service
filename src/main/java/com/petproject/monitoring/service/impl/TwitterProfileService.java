@@ -11,6 +11,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @AllArgsConstructor
 public class TwitterProfileService implements ITwitterProfileService {
@@ -20,10 +22,15 @@ public class TwitterProfileService implements ITwitterProfileService {
 
     @Override
     @Transactional
-    public void save(Long targetUserId, SocialAliasDTO smDTO) {
+    public void add(Long targetUserId, SocialAliasDTO smDTO) {
         targetUserRepository.findById(targetUserId).orElseThrow(NotFoundException::new);
-        if(!tuRepository.findByScreenName(smDTO.getAlias()).isPresent()) {
-            tuRepository.save(TwitterUser.builder().screenName(smDTO.getAlias()).build());
+        Optional<TwitterUser> twitterUserOpt = tuRepository.findByScreenName(smDTO.getAlias());
+        if(!twitterUserOpt.isPresent()) {
+            tuRepository.save(TwitterUser.builder().screenName(smDTO.getAlias()).isTarget(true).build());
+        } else if(!twitterUserOpt.get().isTarget()) {
+            TwitterUser twitterUser = twitterUserOpt.get();
+            twitterUser.setTarget(true);
+            tuRepository.save(twitterUser);
         }
         smRepository.setAlias(smDTO.getAlias(), targetUserId);
     }

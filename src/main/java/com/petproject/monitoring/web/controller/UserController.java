@@ -50,6 +50,6 @@ public class UserController {
     @PostMapping("{userId}/media")
     public void addSocialMediaResources(@PathVariable Long userId,
                                         @RequestBody @NotNull @Valid SocialAliasDTO smDTO) {
-        twitterProfileService.save(userId, smDTO);
+        twitterProfileService.add(userId, smDTO);
     }
 }
