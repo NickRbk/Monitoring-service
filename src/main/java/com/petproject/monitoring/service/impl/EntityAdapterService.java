@@ -1,6 +1,7 @@
 package com.petproject.monitoring.service.impl;
 
 import com.petproject.monitoring.domain.model.*;
+import com.petproject.monitoring.domain.repository.TargetUserRepository;
 import com.petproject.monitoring.domain.repository.TwitterUserRepository;
 import com.petproject.monitoring.service.IEntityAdapterService;
 import com.petproject.monitoring.web.dto.CustomerDTO;
@@ -11,16 +12,19 @@ import org.springframework.stereotype.Service;
 import twitter4j.Status;
 import twitter4j.User;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class EntityAdapterService implements IEntityAdapterService {
     private TwitterUserRepository twitterUserRepository;
+    private TargetUserRepository targetUserRepository;
 
     @Override
-    public Customer getCustomerFromDTO(CustomerDTO customerDTO, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public Customer getCustomerFromDTO(Long customerId, CustomerDTO customerDTO, BCryptPasswordEncoder bCryptPasswordEncoder) {
         return Customer.builder()
+                .id(customerId)
                 .email(customerDTO.getEmail())
                 .firstName(customerDTO.getFirstName())
                 .lastName(customerDTO.getLastName())
@@ -78,6 +82,15 @@ public class EntityAdapterService implements IEntityAdapterService {
                         : null)
                 .targetUser(getTwitterUser(status.getUser()))
                 .build();
+    }
+
+    @Override
+    public void disableTwitterUserAsTargetIfNeeded(TargetUser targetUser) {
+        String screenName = targetUser.getSocialMedia().getTwitterProfile().getTwitterUser().getScreenName();
+        List<TargetUser> targetUsersByScreenName = targetUserRepository.getTargetUsersByScreenName(screenName);
+        if(targetUsersByScreenName.size() == 1) {
+            twitterUserRepository.disableTwitterUserAsTarget(screenName);
+        }
     }
 
     private TwitterUser getTwitterUser(User u) {

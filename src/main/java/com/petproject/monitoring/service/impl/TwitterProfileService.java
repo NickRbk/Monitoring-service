@@ -1,5 +1,6 @@
 package com.petproject.monitoring.service.impl;
 
+import com.petproject.monitoring.domain.model.TargetUser;
 import com.petproject.monitoring.domain.model.TwitterUser;
 import com.petproject.monitoring.domain.repository.TwitterProfileRepository;
 import com.petproject.monitoring.domain.repository.TargetUserRepository;
@@ -32,7 +33,18 @@ public class TwitterProfileService implements ITwitterProfileService {
     @Override
     @Transactional
     public void add(Long customerId, Long targetUserId, SocialAliasDTO smDTO) {
-        targetUserRepository.findByIdAndCustomerId(targetUserId, customerId).orElseThrow(NotFoundException::new);
+        TargetUser targetUser =
+                targetUserRepository.findByIdAndCustomerId(targetUserId, customerId).orElseThrow(NotFoundException::new);
+        saveOrUpdateTwitterUser(smDTO);
+        tpRepository.setAlias(smDTO.getAlias(), targetUserId);
+        disablePrevScreenNameAsTargetIfNeeded(targetUser);
+    }
+
+    private void disablePrevScreenNameAsTargetIfNeeded(TargetUser targetUser) {
+        entityAdapterService.disableTwitterUserAsTargetIfNeeded(targetUser);
+    }
+
+    private void saveOrUpdateTwitterUser(SocialAliasDTO smDTO) {
         Optional<TwitterUser> twitterUserOpt = tuRepository.findByScreenName(smDTO.getAlias());
         if(!twitterUserOpt.isPresent()) {
             try {
@@ -46,6 +58,5 @@ public class TwitterProfileService implements ITwitterProfileService {
             twitterUser.setTarget(true);
             tuRepository.save(twitterUser);
         }
-        tpRepository.setAlias(smDTO.getAlias(), targetUserId);
     }
 }

@@ -8,7 +8,6 @@ import com.petproject.monitoring.service.ITargetUserService;
 import com.petproject.monitoring.service.ITweetService;
 import com.petproject.monitoring.sort.SortConstants;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Slf4j
 @Service
 @AllArgsConstructor
 public class TweetService implements ITweetService, SortConstants {

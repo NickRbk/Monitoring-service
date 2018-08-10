@@ -58,6 +58,7 @@ public class TargetUserService implements ITargetUserService {
     public void delete(Long customerId, Long targetUserId) {
         TargetUser targetUser = targetUserRepository.findByIdAndCustomerId(targetUserId, customerId)
                 .orElseThrow(NotFoundException::new);
+        entityAdapterService.disableTwitterUserAsTargetIfNeeded(targetUser);
         targetUserRepository.delete(targetUser);
     }
 }

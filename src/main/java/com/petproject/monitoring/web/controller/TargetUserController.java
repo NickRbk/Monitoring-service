@@ -27,20 +27,20 @@ public class TargetUserController {
     private IAuthService authService;
 
     @GetMapping
-    public List<TargetUser> getUsers(@RequestHeader(HEADER_STRING) String token) {
+    public List<TargetUser> getTargetUsers(@RequestHeader(HEADER_STRING) String token) {
         return targetUserService.getUsersByCustomerId(authService.getIdFromToken(token));
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping()
-    public void addUser(@RequestBody @NotNull @Valid TargetUserDTO targetUserDTO,
+    public void addTargetUser(@RequestBody @NotNull @Valid TargetUserDTO targetUserDTO,
                         @RequestHeader(HEADER_STRING) String token) {
         targetUserService.add(authService.getIdFromToken(token), targetUserDTO);
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PatchMapping("/{targetUserId}")
-    public void updateUser(@PathVariable Long targetUserId,
+    public void updateTargetUser(@PathVariable Long targetUserId,
                            @RequestBody @NotNull @Valid TargetUserDTO targetUserDTO,
                            @RequestHeader(HEADER_STRING) String token) {
         targetUserService.update(authService.getIdFromToken(token), targetUserId, targetUserDTO);
@@ -48,7 +48,7 @@ public class TargetUserController {
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @DeleteMapping("/{targetUserId}")
-    public void deleteUser(@PathVariable Long targetUserId,
+    public void deleteTargetUser(@PathVariable Long targetUserId,
                            @RequestHeader(HEADER_STRING) String token) {
         targetUserService.delete(authService.getIdFromToken(token), targetUserId);
     }

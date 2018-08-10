@@ -8,8 +8,9 @@ import twitter4j.Status;
 import twitter4j.User;
 
 public interface IEntityAdapterService {
-    Customer getCustomerFromDTO(CustomerDTO customerDTO, BCryptPasswordEncoder bCryptPasswordEncoder);
+    Customer getCustomerFromDTO(Long customerId, CustomerDTO customerDTO, BCryptPasswordEncoder bCryptPasswordEncoder);
     TargetUser getUserFromDTO(Long customerId, Long targetUserId, SocialMedia sm, TargetUserDTO targetUserDTO);
     TwitterUser getTwitterUserFromAPI(User u, boolean isTarget);
     Tweet getTweetFromAPI(Status status);
+    void disableTwitterUserAsTargetIfNeeded(TargetUser targetUser);
 }
