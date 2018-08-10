@@ -12,7 +12,7 @@ public class UpdateTweetsScheduler {
     private IScheduleService scheduleService;
 
     // scheduler run every 30 min
-    @Scheduled(cron = "* 0/30 * * * *")
+    @Scheduled(cron = "${scheduler.cron.updater.twitter}")
     public void updateTweetsByAPIScheduler() {
         scheduleService.checkForNewTweets();
     }

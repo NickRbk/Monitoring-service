@@ -6,7 +6,7 @@ import com.petproject.monitoring.domain.repository.TwitterProfileRepository;
 import com.petproject.monitoring.domain.repository.TargetUserRepository;
 import com.petproject.monitoring.domain.repository.TwitterUserRepository;
 import com.petproject.monitoring.exception.NotFoundException;
-import com.petproject.monitoring.service.IEntityAdapterService;
+import com.petproject.monitoring.service.IHelperService;
 import com.petproject.monitoring.service.ITwitterProfileService;
 import com.petproject.monitoring.web.dto.SocialAliasDTO;
 import lombok.AllArgsConstructor;
@@ -25,7 +25,7 @@ import java.util.Optional;
 public class TwitterProfileService implements ITwitterProfileService {
 
     private Twitter twitter;
-    private IEntityAdapterService entityAdapterService;
+    private IHelperService helperService;
     private TargetUserRepository targetUserRepository;
     private TwitterProfileRepository tpRepository;
     private TwitterUserRepository tuRepository;
@@ -41,7 +41,7 @@ public class TwitterProfileService implements ITwitterProfileService {
     }
 
     private void disablePrevScreenNameAsTargetIfNeeded(TargetUser targetUser) {
-        entityAdapterService.disableTwitterUserAsTargetIfNeeded(targetUser);
+        helperService.disableTwitterUserAsTargetIfNeeded(targetUser);
     }
 
     private void saveOrUpdateTwitterUser(SocialAliasDTO smDTO) {
@@ -49,7 +49,7 @@ public class TwitterProfileService implements ITwitterProfileService {
         if(!twitterUserOpt.isPresent()) {
             try {
                 User u = twitter.showUser(smDTO.getAlias());
-                tuRepository.save(entityAdapterService.getTwitterUserFromAPI(u, true));
+                tuRepository.save(helperService.getTwitterUserFromAPI(u, true));
             } catch (TwitterException e) {
                 log.error(e.getErrorMessage());
             }

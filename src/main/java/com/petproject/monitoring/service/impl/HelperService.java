@@ -3,7 +3,7 @@ package com.petproject.monitoring.service.impl;
 import com.petproject.monitoring.domain.model.*;
 import com.petproject.monitoring.domain.repository.TargetUserRepository;
 import com.petproject.monitoring.domain.repository.TwitterUserRepository;
-import com.petproject.monitoring.service.IEntityAdapterService;
+import com.petproject.monitoring.service.IHelperService;
 import com.petproject.monitoring.web.dto.CustomerDTO;
 import com.petproject.monitoring.web.dto.TargetUserDTO;
 import lombok.AllArgsConstructor;
@@ -17,7 +17,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class EntityAdapterService implements IEntityAdapterService {
+public class HelperService implements IHelperService {
     private TwitterUserRepository twitterUserRepository;
     private TargetUserRepository targetUserRepository;
 

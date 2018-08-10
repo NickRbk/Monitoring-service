@@ -5,7 +5,7 @@ import com.petproject.monitoring.domain.model.TwitterUser;
 import com.petproject.monitoring.domain.repository.TweetRepository;
 import com.petproject.monitoring.domain.repository.TwitterUserRepository;
 import com.petproject.monitoring.scheduler.service.IScheduleService;
-import com.petproject.monitoring.service.IEntityAdapterService;
+import com.petproject.monitoring.service.IHelperService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ import java.util.List;
 public class ScheduleService implements IScheduleService {
 
     private Twitter twitter;
-    private IEntityAdapterService entityAdapterService;
+    private IHelperService entityAdapterService;
     private TweetRepository tweetRepository;
     private TwitterUserRepository tuRepository;
 

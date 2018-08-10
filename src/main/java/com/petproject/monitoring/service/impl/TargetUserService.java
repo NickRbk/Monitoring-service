@@ -7,7 +7,7 @@ import com.petproject.monitoring.domain.repository.SocialMediaRepository;
 import com.petproject.monitoring.domain.repository.TwitterProfileRepository;
 import com.petproject.monitoring.domain.repository.TargetUserRepository;
 import com.petproject.monitoring.exception.NotFoundException;
-import com.petproject.monitoring.service.IEntityAdapterService;
+import com.petproject.monitoring.service.IHelperService;
 import com.petproject.monitoring.service.ITargetUserService;
 import com.petproject.monitoring.web.dto.TargetUserDTO;
 import lombok.AllArgsConstructor;
@@ -21,7 +21,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class TargetUserService implements ITargetUserService {
 
-    private IEntityAdapterService entityAdapterService;
+    private IHelperService helperService;
     private TargetUserRepository targetUserRepository;
     private SocialMediaRepository smRepository;
     private TwitterProfileRepository tpRepository;
@@ -35,7 +35,7 @@ public class TargetUserService implements ITargetUserService {
     @Transactional
     public void add(Long customerId, TargetUserDTO targetUserDTO) {
         TargetUser targetUser = targetUserRepository.save(
-                entityAdapterService.getUserFromDTO(customerId, null, null, targetUserDTO));
+                helperService.getUserFromDTO(customerId, null, null, targetUserDTO));
         TwitterProfile twitterProfile = tpRepository.save(TwitterProfile.builder().targetUserId(targetUser.getId()).build());
         SocialMedia sm = smRepository.save(
                 SocialMedia.builder()
@@ -49,7 +49,7 @@ public class TargetUserService implements ITargetUserService {
     public void update(Long customerId, Long targetUserId, TargetUserDTO targetUserDTO) {
         Optional<TargetUser> user = targetUserRepository.findByIdAndCustomerId(targetUserId, customerId);
         if(user.isPresent()) {
-            targetUserRepository.save(entityAdapterService.getUserFromDTO(
+            targetUserRepository.save(helperService.getUserFromDTO(
                     customerId, targetUserId, user.get().getSocialMedia(), targetUserDTO));
         } else throw new NotFoundException();
     }
@@ -58,7 +58,7 @@ public class TargetUserService implements ITargetUserService {
     public void delete(Long customerId, Long targetUserId) {
         TargetUser targetUser = targetUserRepository.findByIdAndCustomerId(targetUserId, customerId)
                 .orElseThrow(NotFoundException::new);
-        entityAdapterService.disableTwitterUserAsTargetIfNeeded(targetUser);
+        helperService.disableTwitterUserAsTargetIfNeeded(targetUser);
         targetUserRepository.delete(targetUser);
     }
 }

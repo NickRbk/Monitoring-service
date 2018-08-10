@@ -7,7 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import twitter4j.Status;
 import twitter4j.User;
 
-public interface IEntityAdapterService {
+public interface IHelperService {
     Customer getCustomerFromDTO(Long customerId, CustomerDTO customerDTO, BCryptPasswordEncoder bCryptPasswordEncoder);
     TargetUser getUserFromDTO(Long customerId, Long targetUserId, SocialMedia sm, TargetUserDTO targetUserDTO);
     TwitterUser getTwitterUserFromAPI(User u, boolean isTarget);
