@@ -56,7 +56,8 @@ public class TargetUserController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping("{targetUserId}/media")
     public void addSocialMediaResources(@PathVariable Long targetUserId,
-                                        @RequestBody @NotNull @Valid SocialAliasDTO smDTO) {
-        twitterProfileService.add(targetUserId, smDTO);
+                                        @RequestBody @NotNull @Valid SocialAliasDTO smDTO,
+                                        @RequestHeader(HEADER_STRING) String token) {
+        twitterProfileService.add(authService.getIdFromToken(token), targetUserId, smDTO);
     }
 }

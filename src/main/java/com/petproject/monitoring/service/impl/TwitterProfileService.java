@@ -31,8 +31,8 @@ public class TwitterProfileService implements ITwitterProfileService {
 
     @Override
     @Transactional
-    public void add(Long targetUserId, SocialAliasDTO smDTO) {
-        targetUserRepository.findById(targetUserId).orElseThrow(NotFoundException::new);
+    public void add(Long customerId, Long targetUserId, SocialAliasDTO smDTO) {
+        targetUserRepository.findByIdAndCustomerId(targetUserId, customerId).orElseThrow(NotFoundException::new);
         Optional<TwitterUser> twitterUserOpt = tuRepository.findByScreenName(smDTO.getAlias());
         if(!twitterUserOpt.isPresent()) {
             try {
