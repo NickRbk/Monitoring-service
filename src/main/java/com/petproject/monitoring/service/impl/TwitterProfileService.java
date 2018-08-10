@@ -36,7 +36,7 @@ public class TwitterProfileService implements ITwitterProfileService {
         TargetUser targetUser =
                 targetUserRepository.findByIdAndCustomerId(targetUserId, customerId).orElseThrow(NotFoundException::new);
         saveOrUpdateTwitterUser(smDTO);
-        helperService.disableTwitterUserAsTargetIfNeeded(targetUser);
+//        helperService.disableTwitterUserAsTargetIfNeeded(targetUser);
         tpRepository.setAlias(smDTO.getAlias(), targetUserId);
     }
 
