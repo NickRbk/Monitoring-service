@@ -88,14 +88,17 @@ public class HelperService implements IHelperService {
     }
 
     @Override
-    @Transactional
+//    @Transactional
     public void disableTwitterUserAsTargetIfNeeded(TargetUser targetUser) {
-        String screenName = targetUser.getSocialMedia().getTwitterProfile().getTwitterUser().getScreenName();
-        List<TargetUser> targetUsersByScreenName = targetUserRepository.getTargetUsersByScreenName(screenName);
-        if(targetUsersByScreenName.size() == 0) {
-            log.error("disable triggered !!! -----------------------------------------> ");
-            twitterUserRepository.disableTwitterUserAsTarget(screenName);
-        }
+        log.error("INSIDE =========================================");
+//        String screenName = targetUser.getSocialMedia().getTwitterProfile().getTwitterUser().getScreenName();
+//        log.error("INSIDE ========================================= screenName = " + screenName);
+        log.error("INSIDE ========================================= screenName = ");
+//        List<TargetUser> targetUsersByScreenName = targetUserRepository.getTargetUsersByScreenName(screenName);
+//        if(targetUsersByScreenName.size() == 0) {
+//            log.error("disable triggered !!! -----------------------------------------> ");
+//            twitterUserRepository.disableTwitterUserAsTarget(screenName);
+//        }
     }
 
     private TwitterUser getTwitterUser(User u) {
