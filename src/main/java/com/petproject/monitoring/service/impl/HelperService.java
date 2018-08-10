@@ -7,14 +7,17 @@ import com.petproject.monitoring.service.IHelperService;
 import com.petproject.monitoring.web.dto.CustomerDTO;
 import com.petproject.monitoring.web.dto.TargetUserDTO;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import twitter4j.Status;
 import twitter4j.User;
 
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class HelperService implements IHelperService {
@@ -85,10 +88,12 @@ public class HelperService implements IHelperService {
     }
 
     @Override
+    @Transactional
     public void disableTwitterUserAsTargetIfNeeded(TargetUser targetUser) {
         String screenName = targetUser.getSocialMedia().getTwitterProfile().getTwitterUser().getScreenName();
         List<TargetUser> targetUsersByScreenName = targetUserRepository.getTargetUsersByScreenName(screenName);
-        if(targetUsersByScreenName.size() == 1) {
+        if(targetUsersByScreenName.size() == 0) {
+            log.error("disable triggered !!! -----------------------------------------> ");
             twitterUserRepository.disableTwitterUserAsTarget(screenName);
         }
     }
