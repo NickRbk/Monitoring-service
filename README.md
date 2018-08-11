@@ -5,12 +5,13 @@
 This web app provides ability to create targetUsers, attach to them links
 to social media and shows targetUsers posts in them. All operation on service you
 (customer) can do after registration ang getting auth token.
+Information about social activity updates every 30 min by schedule.
 
 There is two open routes:
-- `auth/sign-up` (POST) - create user (customer)
+- `auth/sign-up` (POST) - create user (customer). Email should be unique.
 ```json
 {
-  "email": "*****",      // unique
+  "email": "*****",
   "firstName": "*****",
   "lastName": "*****",
   "password": "*****",
