@@ -3,9 +3,48 @@
 ## Overview
 
 This web app provides ability to create targetUsers, attach to them links
-to social media and shows targetUsers posts in them.
+to social media and shows targetUsers posts in them. All operation on service you
+(customer) can do after registration ang getting auth token.
 
-### User controller (`api/users`)
+For this purpose exist `Auth controller` (`/auth`).
+
+### Auth controller (`/auth`)
+
+- `/sign-up` (POST) - create user (customer)
+```json
+{
+  "email": "*****",      // unique
+  "firstName": "*****",
+  "lastName": "*****",
+  "password": "*****",
+  "phoneNumber": "*****"
+}
+```
+
+- `/` (PATCH) - update customer
+```json
+{
+  "email": "*****",
+  "firstName": "*****",
+  "lastName": "*****",
+  "password": "*****",
+  "phoneNumber": "*****"
+}
+```
+- `/` (DELETE) - delete customer (all associated targetUsers deleted also)
+
+#### To login on service on top level exists route `/login`, so
+- `/login` (POST)
+```json
+{
+  "email": "*****",
+  "password": "*****"
+}
+```
+After that customer get access token (JWT) which pinned to header and open access
+to service.
+
+### TargetUser controller (`api/users`)
 
 - `/` (GET) - get all targetUsers
 ```json
@@ -14,6 +53,7 @@ to social media and shows targetUsers posts in them.
         "createdAt": "2018-08-09T11:12:18.106+0000",
         "updatedAt": "2018-08-09T11:12:18.106+0000",
         "id": 3,
+        "customerId": 5,
         "firstName": "*****",
         "lastName": "*****",
         "socialMedia": {
@@ -130,6 +170,8 @@ to social media and shows targetUsers posts in them.
 (GET) - get ordered by creation date posts (set page, size value, and sort criteria: asc or desc)
 
 ## Prerequisites
+- initially install `twitter4j-spring-boot-starter` from [there](https://github.com/sivaprasadreddy/twitter4j-spring-boot-starter)
+by `mvn clean install`
 - app should be run with "dev" profile
 - start postgreSQL and write actual info into `resources/application-dev.yml`.
 
