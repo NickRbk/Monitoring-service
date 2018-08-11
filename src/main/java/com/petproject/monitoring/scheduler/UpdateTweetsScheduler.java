@@ -8,10 +8,8 @@ import org.springframework.stereotype.Component;
 @Component
 @AllArgsConstructor
 public class UpdateTweetsScheduler {
-
     private IScheduleService scheduleService;
 
-    // scheduler run every 30 min
     @Scheduled(cron = "${scheduler.cron.updater.twitter}")
     public void updateTweetsByAPIScheduler() {
         scheduleService.checkForNewTweets();
