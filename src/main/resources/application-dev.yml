@@ -3,3 +3,11 @@ spring:
     url: jdbc:postgresql://localhost:32768/monitoring-service
     username: postgres
     password: postgres
+
+twitter4j:
+  debug: true
+  oauth:
+    consumer-key:
+    consumer-secret:
+    access-token:
+    access-token-secret:
