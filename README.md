@@ -6,11 +6,8 @@ This web app provides ability to create targetUsers, attach to them links
 to social media and shows targetUsers posts in them. All operation on service you
 (customer) can do after registration ang getting auth token.
 
-For this purpose exist `Auth controller` (`/auth`).
-
-### Auth controller (`/auth`)
-
-- `/sign-up` (POST) - create user (customer)
+There is two open routes:
+- `auth/sign-up` (POST) - create user (customer)
 ```json
 {
   "email": "*****",      // unique
@@ -20,6 +17,19 @@ For this purpose exist `Auth controller` (`/auth`).
   "phoneNumber": "*****"
 }
 ```
+#### To login on service on top level exists route `/login`, so
+- `/login` (POST)
+```json
+{
+  "email": "*****",
+  "password": "*****"
+}
+```
+After that customer get access token (JWT) which pinned to header and open access
+to service.
+
+The bellow routes are protected and need auth token
+### Auth controller (`/auth`)
 
 - `/` (PATCH) - update customer
 ```json
@@ -32,17 +42,6 @@ For this purpose exist `Auth controller` (`/auth`).
 }
 ```
 - `/` (DELETE) - delete customer (all associated targetUsers deleted also)
-
-#### To login on service on top level exists route `/login`, so
-- `/login` (POST)
-```json
-{
-  "email": "*****",
-  "password": "*****"
-}
-```
-After that customer get access token (JWT) which pinned to header and open access
-to service.
 
 ### TargetUser controller (`api/users`)
 
