@@ -110,9 +110,27 @@ The bellow routes are protected and need auth token
 
 ### Social media controller (`api/media`)
 
-- `?page=*&size=*[[ &order={HERE YOU CAN SET desc OR asc, OPTIONAL PARAMETER} ]]` 
+- `?page=***
+    &size=***
+    [[ &orderBy=***, OPTIONAL PARAMETER} ]]
+    [[ &d=***, SORT DIRECTION , OPTIONAL PARAMETER, BY DEFAULT desc} ]]`
+    
+    For `orderBy` you can set:
+    - date - sorted by date of post creation
+    - fav - sorted by favourites count 
+    - share - sorted by shares count.
+    
+    So, the below url are valid:
+    - `/api/media?page=0&size=5` - without sorting
+    - `/api/media?page=0&size=5&orderBy=fav` - sorted by favourites count, 
+    sort direction by default descending
+    - `/api/media?page=0&size=5&orderBy=share&d=desc` - sorted by shares count, 
+        sort direction descending (explicitly)
+    - `/api/media?page=0&size=5&orderBy=date&d=asc` - sorted by creation date, sort
+    direction ascending
+
 (GET) - get posts of targeted users with pagination (set page and size value)
-and (OPTIONALLY) ordered by posts' creation date
+and sorted by optional params
 ```json
 {
     "content": [

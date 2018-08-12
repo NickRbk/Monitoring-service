@@ -21,8 +21,10 @@ public class SocialMediaController {
     @GetMapping()
     public Page<Tweet> getTweets(@RequestParam("page") int page,
                                  @RequestParam("size") int size,
-                                 @RequestParam(value = "order", required = false) String key,
+                                 @RequestParam(value = "orderBy", required = false) String key,
+                                 @RequestParam(value = "d", defaultValue = "desc", required = false) String direction,
                                  @RequestHeader(HEADER_STRING) String token) {
-        return tweetService.getTweets(authService.getIdFromToken(token), key, page, size);
+
+        return tweetService.getTweets(authService.getIdFromToken(token), key, direction, page, size);
     }
 }

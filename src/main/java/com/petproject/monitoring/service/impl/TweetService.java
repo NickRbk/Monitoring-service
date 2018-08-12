@@ -6,35 +6,34 @@ import com.petproject.monitoring.domain.repository.TweetRepository;
 import com.petproject.monitoring.exception.InvalidParameterException;
 import com.petproject.monitoring.service.ITargetUserService;
 import com.petproject.monitoring.service.ITweetService;
-import com.petproject.monitoring.sort.SortConstants;
+import com.petproject.monitoring.sort.EnumGetter;
+import com.petproject.monitoring.sort.SortDirection;
+import com.petproject.monitoring.sort.TwitterSortKeys;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.EnumSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-public class TweetService implements ITweetService, SortConstants {
+public class TweetService implements ITweetService {
     private TweetRepository tweetRepository;
     private ITargetUserService targetUserService;
 
     @Override
-    public Page<Tweet> getTweets(Long customerId, String criteria, int page, int size) {
+    public Page<Tweet> getTweets(Long customerId, String key, String direction, int page, int size) {
         List<Long> targetIdList = getTargetIdList(customerId);
-        if(criteria == null) {
-            return tweetRepository.findAllByTargetUserIdIn(targetIdList, PageRequest.of(page, size));
-        } else return getTweetsIfValidCriteria(criteria, targetIdList, page, size);
-    }
-
-    private Page<Tweet> getTweetsIfValidCriteria(String criteria, List<Long> targetIdList, int page, int size) {
-        if(isValidCriteria(criteria)) {
-            Sort sort = new Sort(Sort.Direction.valueOf(criteria.toUpperCase()), DATE_FIELD);
+        if(key != null) {
+            String d = getParamIfValid(SortDirection.class, direction);
+            String k = getParamIfValid(TwitterSortKeys.class, key);
+            Sort sort = new Sort(Sort.Direction.valueOf(d.toUpperCase()), k);
             return tweetRepository.findAllByTargetUserIdIn(targetIdList, PageRequest.of(page, size, sort));
-        } else throw new InvalidParameterException();
+        } else return tweetRepository.findAllByTargetUserIdIn(targetIdList, PageRequest.of(page, size));
     }
 
     private List<Long> getTargetIdList(Long customerId) {
@@ -44,8 +43,10 @@ public class TweetService implements ITweetService, SortConstants {
                 .collect(Collectors.toList());
     }
 
-    private boolean isValidCriteria(String criteria) {
-        return SORT_CRITERIA.stream()
-                .anyMatch(c -> c.equals(criteria));
+    private <E extends Enum<E> & EnumGetter> String getParamIfValid(Class<E> enumToCheck, String criteria) {
+        for (E value : EnumSet.allOf(enumToCheck)) {
+            if(value.name().equalsIgnoreCase(criteria)) return value.getValue();
+        }
+        throw new InvalidParameterException();
     }
 }
