@@ -110,7 +110,9 @@ The bellow routes are protected and need auth token
 
 ### Social media controller (`api/media`)
 
-- `?page=?&size=?` (GET) - get posts of targeted users with pagination (set page and size value)
+- `?page=*&size=*[[ &order={HERE YOU CAN SET desc OR asc, OPTIONAL PARAMETER} ]]` 
+(GET) - get posts of targeted users with pagination (set page and size value)
+and (OPTIONALLY) ordered by posts' creation date
 ```json
 {
     "content": [
@@ -165,9 +167,6 @@ The bellow routes are protected and need auth token
     "numberOfElements": 1
 }
 ```
-
-- `/sort?page=?&size=?&orderBy={HERE YOU CAN SET desc OR asc}` 
-(GET) - get ordered by creation date posts (set page, size value, and sort criteria: asc or desc)
 
 ## Prerequisites
 - initially install `twitter4j-spring-boot-starter` from [there](https://github.com/sivaprasadreddy/twitter4j-spring-boot-starter)

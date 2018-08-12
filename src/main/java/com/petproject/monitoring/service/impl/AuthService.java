@@ -1,6 +1,6 @@
 package com.petproject.monitoring.service.impl;
 
-import com.petproject.monitoring.security.SecurityConstants;
+import com.petproject.monitoring.security.constants.SecurityConstants;
 import com.petproject.monitoring.service.IAuthService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

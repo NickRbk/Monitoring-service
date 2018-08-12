@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import static com.petproject.monitoring.security.SecurityConstants.HEADER_STRING;
+import static com.petproject.monitoring.security.constants.SecurityConstants.HEADER_STRING;
 
 @Validated
 @RestController
@@ -21,15 +21,8 @@ public class SocialMediaController {
     @GetMapping()
     public Page<Tweet> getTweets(@RequestParam("page") int page,
                                  @RequestParam("size") int size,
+                                 @RequestParam(value = "order", required = false) String key,
                                  @RequestHeader(HEADER_STRING) String token) {
-        return tweetService.getTweets(authService.getIdFromToken(token), page, size);
-    }
-
-    @GetMapping("/sort")
-    public Page<Tweet> getTweetsOrderByDate(@RequestParam("page") int page,
-                                            @RequestParam("size") int size,
-                                            @RequestParam("orderBy") String key,
-                                            @RequestHeader(HEADER_STRING) String token) {
-        return tweetService.getTweetsOrderByDate(authService.getIdFromToken(token), key, page, size);
+        return tweetService.getTweets(authService.getIdFromToken(token), key, page, size);
     }
 }

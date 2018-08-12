@@ -23,15 +23,15 @@ public class TweetService implements ITweetService, SortConstants {
     private ITargetUserService targetUserService;
 
     @Override
-    public Page<Tweet> getTweets(Long customerId, int page, int size) {
+    public Page<Tweet> getTweets(Long customerId, String criteria, int page, int size) {
         List<Long> targetIdList = getTargetIdList(customerId);
-        return tweetRepository.findAllByTargetUserIdIn(targetIdList, PageRequest.of(page, size));
+        if(criteria == null) {
+            return tweetRepository.findAllByTargetUserIdIn(targetIdList, PageRequest.of(page, size));
+        } else return getTweetsIfValidCriteria(criteria, targetIdList, page, size);
     }
 
-    @Override
-    public Page<Tweet> getTweetsOrderByDate(Long customerId, String criteria, int page, int size) {
+    private Page<Tweet> getTweetsIfValidCriteria(String criteria, List<Long> targetIdList, int page, int size) {
         if(isValidCriteria(criteria)) {
-            List<Long> targetIdList = getTargetIdList(customerId);
             Sort sort = new Sort(Sort.Direction.valueOf(criteria.toUpperCase()), DATE_FIELD);
             return tweetRepository.findAllByTargetUserIdIn(targetIdList, PageRequest.of(page, size, sort));
         } else throw new InvalidParameterException();

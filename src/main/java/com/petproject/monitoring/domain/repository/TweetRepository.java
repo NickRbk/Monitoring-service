@@ -8,6 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface TweetRepository extends JpaRepository<Tweet, Long> {
-    Page<Tweet> findAll(Pageable pageable);
     Page<Tweet> findAllByTargetUserIdIn(List<Long> targetIdList, Pageable pageable);
 }

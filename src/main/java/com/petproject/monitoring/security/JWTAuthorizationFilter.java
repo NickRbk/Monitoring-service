@@ -1,6 +1,7 @@
 package com.petproject.monitoring.security;
 
 import com.petproject.monitoring.security.constants.JWTConstants;
+import com.petproject.monitoring.security.constants.SecurityConstants;
 import io.jsonwebtoken.Jwts;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

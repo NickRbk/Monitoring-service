@@ -1,4 +1,4 @@
-package com.petproject.monitoring.security;
+package com.petproject.monitoring.security.constants;
 
 public interface SecurityConstants {
 	String SECRET = "SecretKeyToGenJWTs";

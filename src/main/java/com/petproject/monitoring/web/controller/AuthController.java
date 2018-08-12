@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-import static com.petproject.monitoring.security.SecurityConstants.HEADER_STRING;
+import static com.petproject.monitoring.security.constants.SecurityConstants.HEADER_STRING;
 
 @Validated
 @RestController

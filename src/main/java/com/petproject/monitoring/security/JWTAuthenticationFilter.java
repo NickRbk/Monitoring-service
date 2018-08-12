@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.petproject.monitoring.domain.model.Customer;
 import com.petproject.monitoring.security.constants.JWTConstants;
+import com.petproject.monitoring.security.constants.SecurityConstants;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
