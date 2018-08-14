@@ -1,8 +1,11 @@
 package com.petproject.monitoring.web.controller;
 
+import com.petproject.monitoring.domain.model.Customer;
 import com.petproject.monitoring.service.IAuthService;
 import com.petproject.monitoring.service.ICustomerService;
+import com.petproject.monitoring.service.IHelperService;
 import com.petproject.monitoring.web.dto.CustomerDTO;
+import com.petproject.monitoring.web.dto.CustomerResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -19,7 +22,14 @@ import static com.petproject.monitoring.security.constants.SecurityConstants.HEA
 @AllArgsConstructor
 public class AuthController {
     private ICustomerService customerService;
+    private IHelperService helperService;
     private IAuthService authService;
+
+    @GetMapping()
+    public CustomerResponse getCustomer(@RequestHeader(HEADER_STRING) String token) {
+        Customer customer = customerService.getById(authService.getIdFromToken(token));
+        return helperService.getCustomerResponseFromEntity(customer);
+    }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PatchMapping()

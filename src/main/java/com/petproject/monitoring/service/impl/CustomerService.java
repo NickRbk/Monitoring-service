@@ -1,7 +1,9 @@
 package com.petproject.monitoring.service.impl;
 
+import com.petproject.monitoring.domain.model.Customer;
 import com.petproject.monitoring.domain.model.TargetUser;
 import com.petproject.monitoring.domain.repository.CustomerRepository;
+import com.petproject.monitoring.exception.NotFoundException;
 import com.petproject.monitoring.service.ICustomerService;
 import com.petproject.monitoring.service.IHelperService;
 import com.petproject.monitoring.service.ITargetUserService;
@@ -28,6 +30,11 @@ public class CustomerService implements ICustomerService {
     @Override
     public void update(Long customerId, CustomerDTO customerDTO) {
         customerRepository.save(helperService.getCustomerFromDTO(customerId, customerDTO, bCryptPasswordEncoder));
+    }
+
+    @Override
+    public Customer getById(Long customerId) {
+        return customerRepository.findById(customerId).orElseThrow(NotFoundException::new);
     }
 
     @Override

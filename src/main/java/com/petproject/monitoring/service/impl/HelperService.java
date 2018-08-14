@@ -5,6 +5,7 @@ import com.petproject.monitoring.domain.repository.TargetUserRepository;
 import com.petproject.monitoring.domain.repository.TwitterUserRepository;
 import com.petproject.monitoring.service.IHelperService;
 import com.petproject.monitoring.web.dto.CustomerDTO;
+import com.petproject.monitoring.web.dto.CustomerResponse;
 import com.petproject.monitoring.web.dto.TargetUserDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -40,6 +41,15 @@ public class HelperService implements IHelperService {
                 .firstName(targetUserDTO.getFirstName())
                 .lastName(targetUserDTO.getLastName())
                 .socialMedia(sm).build();
+    }
+
+    @Override
+    public CustomerResponse getCustomerResponseFromEntity(Customer customer) {
+        return CustomerResponse.builder()
+                .email(customer.getEmail())
+                .firstName(customer.getFirstName())
+                .lastName(customer.getLastName())
+                .phoneNumber(customer.getPhoneNumber()).build();
     }
 
     @Override
