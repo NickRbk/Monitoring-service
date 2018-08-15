@@ -9,5 +9,5 @@ public interface ITargetUserService {
     List<TargetUser> getUsersByCustomerId(Long customerId);
     void add(Long customerId, TargetUserDTO targetUserDTO);
     void update(Long customerId, Long targetUserId, TargetUserDTO targetUserDTO);
-    void delete(Long customerId, Long targetUserId);
+    void delete(TargetUser targetUser);
 }
