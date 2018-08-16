@@ -32,6 +32,16 @@ to service.
 The bellow routes are protected and need auth token
 ### Auth controller (`/auth`)
 
+- '/' (GET) - get customer
+```json
+{
+  "id": "*****",
+  "email": "*****",
+  "firstName": "*****",
+  "lastName": "*****",
+  "phoneNumber": "*****"
+}
+```
 - `/` (PATCH) - update customer
 ```json
 {
