@@ -48,15 +48,19 @@ public class JWTAuthenticationFilter
                                             FilterChain chain,
                                             Authentication auth) {
         CustomUser user = (CustomUser) auth.getPrincipal();
+        Date expirationDate = new Date(System.currentTimeMillis() + EXPIRATION_TIME);
+
         Claims claims = Jwts.claims();
         claims.put(EMAIL, user.getUsername());
         claims.put(CUSTOMER_ID, user.getCustomer().getId());
         claims.put(CUSTOMER, user.getCustomer());
         String token = Jwts.builder()
                 .setClaims(claims)
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .setExpiration(expirationDate)
                 .signWith(SignatureAlgorithm.HS512, SECRET.getBytes())
                 .compact();
+
         res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
+        res.addHeader(HEADER_EXPIRATION_STRING, Long.toString(expirationDate.getTime()));
     }
 }
