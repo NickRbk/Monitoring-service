@@ -12,5 +12,6 @@ public interface ITargetUserService {
     void add(Long customerId, TargetUserReqDTO targetUserReqDTO);
     void update(Long customerId, Long targetUserId, TargetUserReqDTO targetUserReqDTO);
     void delete(Long customerId, Long targetUserId);
+    void delete(TargetUser targetUser);
     List<Long> getTargetIdList(Long customerId);
 }

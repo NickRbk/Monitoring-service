@@ -90,7 +90,17 @@ public class TargetUserService implements ITargetUserService {
     public void delete(Long customerId, Long targetUserId) {
         TargetUser targetUser = targetUserRepository.findByIdAndCustomerId(targetUserId, customerId)
                 .orElseThrow(NotFoundException::new);
-        targetUserRepository.deleteById(targetUserId);
+        deleteByTargetUser(targetUser);
+    }
+
+    @Override
+    @Transactional
+    public void delete(TargetUser targetUser) {
+        deleteByTargetUser(targetUser);
+    }
+
+    private void deleteByTargetUser(TargetUser targetUser) {
+        targetUserRepository.deleteById(targetUser.getId());
         twitterUserService.disableTwitterUserAsTargetIfNeeded(targetUser);
     }
 }

@@ -40,7 +40,7 @@ public class CustomerService implements ICustomerService {
     @Override
     public void delete(Long customerId) {
         List<TargetUser> targetUsers = targetUserService.getUsersByCustomerId(customerId);
-        targetUsers.forEach(targetUser -> targetUserService.delete(customerId, targetUser.getId()));
+        targetUsers.forEach(targetUser -> targetUserService.delete(targetUser));
         customerRepository.deleteById(customerId);
     }
 }
