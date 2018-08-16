@@ -11,6 +11,7 @@ public class TwitterUserResDTO {
     private Long id;
     private String userName;
     private String alias;
+    private String profileURL;
     private String location;
     private String description;
     private int followersCount;

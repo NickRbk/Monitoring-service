@@ -3,6 +3,7 @@ package com.petproject.monitoring.service.impl;
 import com.petproject.monitoring.domain.model.*;
 import com.petproject.monitoring.domain.repository.TwitterUserRepository;
 import com.petproject.monitoring.service.IEntityAdapterService;
+import com.petproject.monitoring.service.constants.SocialMediaConstants;
 import com.petproject.monitoring.web.dto.request.CustomerReqDTO;
 import com.petproject.monitoring.web.dto.response.*;
 import com.petproject.monitoring.web.dto.request.TargetUserReqDTO;
@@ -19,7 +20,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class EntityAdapterService implements IEntityAdapterService {
+public class EntityAdapterService implements IEntityAdapterService, SocialMediaConstants {
     private TwitterUserRepository twitterUserRepository;
 
     @Override
@@ -118,6 +119,7 @@ public class EntityAdapterService implements IEntityAdapterService {
                 .id(twitterUser.getId())
                 .userName(twitterUser.getUserName())
                 .alias(twitterUser.getScreenName())
+                .profileURL(TWITTER_URL + twitterUser.getScreenName())
                 .location(twitterUser.getLocation())
                 .description(twitterUser.getDescription())
                 .followersCount(twitterUser.getFollowersCount())
