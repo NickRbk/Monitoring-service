@@ -1,4 +1,4 @@
-package com.petproject.monitoring.web.dto;
+package com.petproject.monitoring.web.dto.request;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
-public class TargetUserDTO {
+public class TargetUserReqDTO {
     @NotNull
     private String firstName;
     @NotNull

@@ -3,9 +3,9 @@ package com.petproject.monitoring.web.controller;
 import com.petproject.monitoring.domain.model.Customer;
 import com.petproject.monitoring.service.IAuthService;
 import com.petproject.monitoring.service.ICustomerService;
-import com.petproject.monitoring.service.IHelperService;
-import com.petproject.monitoring.web.dto.CustomerDTO;
-import com.petproject.monitoring.web.dto.CustomerResponse;
+import com.petproject.monitoring.service.IEntityAdapterService;
+import com.petproject.monitoring.web.dto.request.CustomerReqDTO;
+import com.petproject.monitoring.web.dto.response.CustomerResDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -20,22 +20,22 @@ import static com.petproject.monitoring.security.constants.SecurityConstants.HEA
 @RestController
 @RequestMapping("/auth")
 @AllArgsConstructor
-public class AuthController {
+public class CustomerController {
     private ICustomerService customerService;
-    private IHelperService helperService;
+    private IEntityAdapterService entityAdapterService;
     private IAuthService authService;
 
     @GetMapping()
-    public CustomerResponse getCustomer(@RequestHeader(HEADER_STRING) String token) {
+    public CustomerResDTO getCustomer(@RequestHeader(HEADER_STRING) String token) {
         Customer customer = customerService.getById(authService.getIdFromToken(token));
-        return helperService.getCustomerResponseFromEntity(customer);
+        return entityAdapterService.getCustomerResDTOFromEntity(customer);
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PatchMapping()
-    public void updateCustomer(@RequestBody @NotNull @Valid CustomerDTO customerDTO,
+    public void updateCustomer(@RequestBody @NotNull @Valid CustomerReqDTO customerReqDTO,
                                @RequestHeader(HEADER_STRING) String token) {
-        customerService.update(authService.getIdFromToken(token), customerDTO);
+        customerService.update(authService.getIdFromToken(token), customerReqDTO);
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
@@ -46,7 +46,7 @@ public class AuthController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/sign-up")
-    public void signUp(@RequestBody @NotNull @Valid CustomerDTO customerDTO) {
-        customerService.signUp(customerDTO);
+    public void signUp(@RequestBody @NotNull @Valid CustomerReqDTO customerReqDTO) {
+        customerService.signUp(customerReqDTO);
     }
 }

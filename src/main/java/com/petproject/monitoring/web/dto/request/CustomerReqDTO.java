@@ -1,4 +1,4 @@
-package com.petproject.monitoring.web.dto;
+package com.petproject.monitoring.web.dto.request;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 
 @Getter
 @Setter
-public class CustomerDTO {
+public class CustomerReqDTO {
     @NotNull(message = "email can not be NULL")
     @Email(message = "INVALID EMAIL")
     private String email;

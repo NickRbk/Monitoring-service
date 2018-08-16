@@ -6,9 +6,10 @@ import com.petproject.monitoring.domain.repository.TwitterProfileRepository;
 import com.petproject.monitoring.domain.repository.TargetUserRepository;
 import com.petproject.monitoring.domain.repository.TwitterUserRepository;
 import com.petproject.monitoring.exception.NotFoundException;
-import com.petproject.monitoring.service.IHelperService;
+import com.petproject.monitoring.service.IEntityAdapterService;
 import com.petproject.monitoring.service.ITwitterProfileService;
-import com.petproject.monitoring.web.dto.SocialAliasDTO;
+import com.petproject.monitoring.service.ITwitterUserService;
+import com.petproject.monitoring.web.dto.request.SocialAliasReqDTO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,34 +26,35 @@ import java.util.Optional;
 public class TwitterProfileService implements ITwitterProfileService {
 
     private Twitter twitter;
-    private IHelperService helperService;
+    private IEntityAdapterService entityAdapterService;
+    private ITwitterUserService twitterUserService;
     private TargetUserRepository targetUserRepository;
-    private TwitterProfileRepository tpRepository;
-    private TwitterUserRepository tuRepository;
+    private TwitterProfileRepository twitterProfileRepository;
+    private TwitterUserRepository twitterUserRepository;
 
     @Override
     @Transactional
-    public void add(Long customerId, Long targetUserId, SocialAliasDTO smDTO) {
+    public void add(Long customerId, Long targetUserId, SocialAliasReqDTO smDTO) {
         TargetUser targetUser =
                 targetUserRepository.findByIdAndCustomerId(targetUserId, customerId).orElseThrow(NotFoundException::new);
         saveOrUpdateTwitterUser(smDTO);
-        tpRepository.setAlias(smDTO.getAlias(), targetUserId);
-        helperService.disableTwitterUserAsTargetIfNeeded(targetUser);
+        twitterProfileRepository.setAlias(smDTO.getAlias(), targetUserId);
+        twitterUserService.disableTwitterUserAsTargetIfNeeded(targetUser);
     }
 
-    private void saveOrUpdateTwitterUser(SocialAliasDTO smDTO) {
-        Optional<TwitterUser> twitterUserOpt = tuRepository.findByScreenName(smDTO.getAlias());
+    private void saveOrUpdateTwitterUser(SocialAliasReqDTO smDTO) {
+        Optional<TwitterUser> twitterUserOpt = twitterUserRepository.findByScreenName(smDTO.getAlias());
         if(!twitterUserOpt.isPresent()) {
             try {
                 User u = twitter.showUser(smDTO.getAlias());
-                tuRepository.save(helperService.getTwitterUserFromAPI(u, true));
+                twitterUserRepository.save(entityAdapterService.getTwitterUserFromAPI(u, true));
             } catch (TwitterException e) {
                 log.error(e.getErrorMessage());
             }
         } else if(!twitterUserOpt.get().isTarget()) {
             TwitterUser twitterUser = twitterUserOpt.get();
             twitterUser.setTarget(true);
-            tuRepository.save(twitterUser);
+            twitterUserRepository.save(twitterUser);
         }
     }
 }

@@ -1,8 +1,7 @@
 package com.petproject.monitoring.service;
 
-import com.petproject.monitoring.domain.model.Tweet;
-import org.springframework.data.domain.Page;
+import com.petproject.monitoring.web.dto.response.TweetsPageResDTO;
 
 public interface ITweetService {
-    Page<Tweet> getTweets(Long customerId, String key, String direction, int page, int size);
+    TweetsPageResDTO getTweets(Long customerId, String key, String direction, int page, int size);
 }

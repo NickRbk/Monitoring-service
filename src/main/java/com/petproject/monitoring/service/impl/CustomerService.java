@@ -5,9 +5,9 @@ import com.petproject.monitoring.domain.model.TargetUser;
 import com.petproject.monitoring.domain.repository.CustomerRepository;
 import com.petproject.monitoring.exception.NotFoundException;
 import com.petproject.monitoring.service.ICustomerService;
-import com.petproject.monitoring.service.IHelperService;
+import com.petproject.monitoring.service.IEntityAdapterService;
 import com.petproject.monitoring.service.ITargetUserService;
-import com.petproject.monitoring.web.dto.CustomerDTO;
+import com.petproject.monitoring.web.dto.request.CustomerReqDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,19 +17,19 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class CustomerService implements ICustomerService {
-    private IHelperService helperService;
+    private IEntityAdapterService entityAdapterService;
     private CustomerRepository customerRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     private ITargetUserService targetUserService;
 
     @Override
-    public void signUp(CustomerDTO customerDTO) {
-        customerRepository.save(helperService.getCustomerFromDTO(null, customerDTO, bCryptPasswordEncoder));
+    public void signUp(CustomerReqDTO customerReqDTO) {
+        customerRepository.save(entityAdapterService.getCustomerFromDTO(null, customerReqDTO, bCryptPasswordEncoder));
     }
 
     @Override
-    public void update(Long customerId, CustomerDTO customerDTO) {
-        customerRepository.save(helperService.getCustomerFromDTO(customerId, customerDTO, bCryptPasswordEncoder));
+    public void update(Long customerId, CustomerReqDTO customerReqDTO) {
+        customerRepository.save(entityAdapterService.getCustomerFromDTO(customerId, customerReqDTO, bCryptPasswordEncoder));
     }
 
     @Override

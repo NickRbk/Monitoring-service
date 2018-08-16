@@ -7,24 +7,29 @@ import com.petproject.monitoring.domain.repository.SocialMediaRepository;
 import com.petproject.monitoring.domain.repository.TwitterProfileRepository;
 import com.petproject.monitoring.domain.repository.TargetUserRepository;
 import com.petproject.monitoring.exception.NotFoundException;
-import com.petproject.monitoring.service.IHelperService;
+import com.petproject.monitoring.service.IEntityAdapterService;
 import com.petproject.monitoring.service.ITargetUserService;
-import com.petproject.monitoring.web.dto.TargetUserDTO;
+import com.petproject.monitoring.service.ITwitterUserService;
+import com.petproject.monitoring.web.dto.request.TargetUserReqDTO;
+import com.petproject.monitoring.web.dto.response.TargetUserResDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class TargetUserService implements ITargetUserService {
 
-    private IHelperService helperService;
+    private IEntityAdapterService entityAdapterService;
+    private ITwitterUserService twitterUserService;
     private TargetUserRepository targetUserRepository;
-    private SocialMediaRepository smRepository;
-    private TwitterProfileRepository tpRepository;
+    private SocialMediaRepository socialMediaRepository;
+    private TwitterProfileRepository twitterProfileRepository;
 
     @Override
     public List<TargetUser> getUsersByCustomerId(Long customerId) {
@@ -32,12 +37,34 @@ public class TargetUserService implements ITargetUserService {
     }
 
     @Override
+    public List<TargetUserResDTO> getUsersResDTO(Long customerId) {
+        List<TargetUserResDTO> targetUserResDTOs = new ArrayList<>();
+        List<TargetUser> targetUsers = targetUserRepository.getAllByCustomerId(customerId);
+        targetUsers.forEach(targetUser -> {
+            TargetUserResDTO targetUserResDTO = entityAdapterService.getTargetUserResDTOFromEntity(targetUser);
+            targetUserResDTOs.add(targetUserResDTO);
+        });
+        return targetUserResDTOs;
+    }
+
+    @Override
+    public List<Long> getTargetIdList(Long customerId) {
+        List<TargetUser> targetUsers = getUsersByCustomerId(customerId);
+        return targetUsers.stream()
+                .map(u -> u.getSocialMedia().getTwitterProfile().getTwitterUser().getId())
+                .collect(Collectors.toList());
+    }
+
+    @Override
     @Transactional
-    public void add(Long customerId, TargetUserDTO targetUserDTO) {
+    public void add(Long customerId, TargetUserReqDTO targetUserReqDTO) {
         TargetUser targetUser = targetUserRepository.save(
-                helperService.getUserFromDTO(customerId, null, null, targetUserDTO));
-        TwitterProfile twitterProfile = tpRepository.save(TwitterProfile.builder().targetUserId(targetUser.getId()).build());
-        SocialMedia sm = smRepository.save(
+                entityAdapterService.getTargetUserFromDTO(customerId, null, null, targetUserReqDTO)
+        );
+        TwitterProfile twitterProfile = twitterProfileRepository.save(
+                TwitterProfile.builder().targetUserId(targetUser.getId()).build()
+        );
+        SocialMedia sm = socialMediaRepository.save(
                 SocialMedia.builder()
                         .targetUserId(targetUser.getId())
                         .twitterProfile(twitterProfile)
@@ -46,12 +73,16 @@ public class TargetUserService implements ITargetUserService {
     }
 
     @Override
-    public void update(Long customerId, Long targetUserId, TargetUserDTO targetUserDTO) {
+    public void update(Long customerId, Long targetUserId, TargetUserReqDTO targetUserReqDTO) {
         Optional<TargetUser> user = targetUserRepository.findByIdAndCustomerId(targetUserId, customerId);
         if(user.isPresent()) {
-            targetUserRepository.save(helperService.getUserFromDTO(
-                    customerId, targetUserId, user.get().getSocialMedia(), targetUserDTO));
-        } else throw new NotFoundException();
+            SocialMedia sm = user.get().getSocialMedia();
+            targetUserRepository.save(
+                    entityAdapterService.getTargetUserFromDTO(customerId, targetUserId, sm, targetUserReqDTO)
+            );
+        } else {
+            throw new NotFoundException();
+        }
     }
 
     @Override
@@ -60,6 +91,6 @@ public class TargetUserService implements ITargetUserService {
         TargetUser targetUser = targetUserRepository.findByIdAndCustomerId(targetUserId, customerId)
                 .orElseThrow(NotFoundException::new);
         targetUserRepository.deleteById(targetUserId);
-        helperService.disableTwitterUserAsTargetIfNeeded(targetUser);
+        twitterUserService.disableTwitterUserAsTargetIfNeeded(targetUser);
     }
 }

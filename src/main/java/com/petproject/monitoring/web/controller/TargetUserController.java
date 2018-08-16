@@ -1,11 +1,11 @@
 package com.petproject.monitoring.web.controller;
 
-import com.petproject.monitoring.domain.model.TargetUser;
 import com.petproject.monitoring.service.IAuthService;
 import com.petproject.monitoring.service.ITwitterProfileService;
 import com.petproject.monitoring.service.ITargetUserService;
-import com.petproject.monitoring.web.dto.SocialAliasDTO;
-import com.petproject.monitoring.web.dto.TargetUserDTO;
+import com.petproject.monitoring.web.dto.request.SocialAliasReqDTO;
+import com.petproject.monitoring.web.dto.request.TargetUserReqDTO;
+import com.petproject.monitoring.web.dto.response.TargetUserResDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -27,23 +27,23 @@ public class TargetUserController {
     private IAuthService authService;
 
     @GetMapping
-    public List<TargetUser> getTargetUsers(@RequestHeader(HEADER_STRING) String token) {
-        return targetUserService.getUsersByCustomerId(authService.getIdFromToken(token));
+    public List<TargetUserResDTO> getTargetUsers(@RequestHeader(HEADER_STRING) String token) {
+        return targetUserService.getUsersResDTO(authService.getIdFromToken(token));
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping()
-    public void addTargetUser(@RequestBody @NotNull @Valid TargetUserDTO targetUserDTO,
+    public void addTargetUser(@RequestBody @NotNull @Valid TargetUserReqDTO targetUserReqDTO,
                         @RequestHeader(HEADER_STRING) String token) {
-        targetUserService.add(authService.getIdFromToken(token), targetUserDTO);
+        targetUserService.add(authService.getIdFromToken(token), targetUserReqDTO);
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PatchMapping("/{targetUserId}")
     public void updateTargetUser(@PathVariable Long targetUserId,
-                           @RequestBody @NotNull @Valid TargetUserDTO targetUserDTO,
+                           @RequestBody @NotNull @Valid TargetUserReqDTO targetUserReqDTO,
                            @RequestHeader(HEADER_STRING) String token) {
-        targetUserService.update(authService.getIdFromToken(token), targetUserId, targetUserDTO);
+        targetUserService.update(authService.getIdFromToken(token), targetUserId, targetUserReqDTO);
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
@@ -56,7 +56,7 @@ public class TargetUserController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping("{targetUserId}/media")
     public void addSocialMediaResources(@PathVariable Long targetUserId,
-                                        @RequestBody @NotNull @Valid SocialAliasDTO smDTO,
+                                        @RequestBody @NotNull @Valid SocialAliasReqDTO smDTO,
                                         @RequestHeader(HEADER_STRING) String token) {
         twitterProfileService.add(authService.getIdFromToken(token), targetUserId, smDTO);
     }

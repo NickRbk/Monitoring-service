@@ -1,4 +1,4 @@
-package com.petproject.monitoring.web.dto;
+package com.petproject.monitoring.web.dto.response;
 
 import lombok.*;
 
@@ -7,7 +7,8 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CustomerResponse {
+public class CustomerResDTO {
+    private Long id;
     private String email;
     private String firstName;
     private String lastName;

@@ -1,10 +1,9 @@
 package com.petproject.monitoring.web.controller;
 
-import com.petproject.monitoring.domain.model.Tweet;
 import com.petproject.monitoring.service.IAuthService;
 import com.petproject.monitoring.service.ITweetService;
+import com.petproject.monitoring.web.dto.response.TweetsPageResDTO;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,11 +18,11 @@ public class SocialMediaController {
     private IAuthService authService;
 
     @GetMapping()
-    public Page<Tweet> getTweets(@RequestParam("page") int page,
-                                 @RequestParam("size") int size,
-                                 @RequestParam(value = "orderBy", required = false) String key,
-                                 @RequestParam(value = "d", defaultValue = "desc", required = false) String direction,
-                                 @RequestHeader(HEADER_STRING) String token) {
+    public TweetsPageResDTO getTweets(@RequestParam("page") int page,
+                                            @RequestParam("size") int size,
+                                            @RequestParam(value = "orderBy", required = false) String key,
+                                            @RequestParam(value = "d", defaultValue = "desc", required = false) String direction,
+                                            @RequestHeader(HEADER_STRING) String token) {
 
         return tweetService.getTweets(authService.getIdFromToken(token), key, direction, page, size);
     }
