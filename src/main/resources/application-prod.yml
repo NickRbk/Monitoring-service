@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: ${JDBC_DATABASE_URL}
+    username: ${JDBC_DATABASE_USERNAME}
+    password: ${JDBC_DATABASE_PASSWORD}
+
+twitter4j:
+  debug: true
+  oauth:
+    consumer-key: APVfUoL83C1D4BE5hhpl1nMvH
+    consumer-secret: djzIJK1QAq7ORStGQo5hHW3ZRIW9gHJI2t7K8wrHc6Vu0KUkOi
+    access-token: 998679054457933825-0xOnmn8snCn4YmGKuo3oPjRJPHrJvd3
+    access-token-secret: C44wsOwaqYo6H69bii7LLX2406EXWCKTDCB7blmbWywVA
