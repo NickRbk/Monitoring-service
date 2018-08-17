@@ -3,11 +3,14 @@ package com.petproject.monitoring.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 
 @Configuration
+@PropertySource("classpath:application-prod.yml")
+@PropertySource("classpath:application-dev.yml.yml")
 public class Twitter4JConfiguration {
 
     @Value("${twitter4j.oauth.consumer-key}") String consumerKey;
