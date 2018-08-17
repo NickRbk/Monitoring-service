@@ -5,7 +5,6 @@ spring:
     password: ${JDBC_DATABASE_PASSWORD}
 
 twitter4j:
-  debug: true
   oauth:
     consumer-key: ${TWITTER_CONSUMER_KEY}
     consumer-secret: ${TWITTER_CONSUMER_SECRET}
