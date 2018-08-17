@@ -10,7 +10,7 @@ import twitter4j.conf.ConfigurationBuilder;
 
 @Configuration
 @PropertySource("classpath:application-prod.yml")
-@PropertySource("classpath:application-dev.yml.yml")
+@PropertySource("classpath:application-dev.yml")
 public class Twitter4JConfiguration {
 
     @Value("${twitter4j.oauth.consumer-key}") String consumerKey;
