@@ -11,14 +11,6 @@
     <name>monitoring</name>
     <description>Monitoring service of subordinates activities in social media</description>
 
-    <repositories>
-        <repository>
-            <id>project.local</id>
-            <name>twitter4j</name>
-            <url>file:${project.basedir}/src/main/resources/twitter4j-starter</url>
-        </repository>
-    </repositories>
-
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -51,11 +43,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.twitter4j/twitter4j-core -->
         <dependency>
-            <groupId>com.sivalabs</groupId>
-            <artifactId>twitter4j-spring-boot-starter</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <!--<systemPath>${basedir}/src/main/resources/twitter4j-starter/com/sivalabs/twitter4j-spring-boot-starter/1.0-SNAPSHOT/twitter4j-spring-boot-starter-1.0-SNAPSHOT.jar</systemPath>-->
+            <groupId>org.twitter4j</groupId>
+            <artifactId>twitter4j-core</artifactId>
+            <version>4.0.7</version>
         </dependency>
         <dependency>
             <groupId>org.liquibase</groupId>
