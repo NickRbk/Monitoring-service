@@ -9,7 +9,7 @@ import java.util.List;
 public interface ITargetUserService {
     List<TargetUser> getUsersByCustomerId(Long customerId);
     List<TargetUserResDTO> getUsersResDTO(Long customerId);
-    void add(Long customerId, TargetUserReqDTO targetUserReqDTO);
+    long add(Long customerId, TargetUserReqDTO targetUserReqDTO);
     void update(Long customerId, Long targetUserId, TargetUserReqDTO targetUserReqDTO);
     void delete(Long customerId, Long targetUserId);
     void delete(TargetUser targetUser);

@@ -57,7 +57,7 @@ public class TargetUserService implements ITargetUserService {
 
     @Override
     @Transactional
-    public void add(Long customerId, TargetUserReqDTO targetUserReqDTO) {
+    public long add(Long customerId, TargetUserReqDTO targetUserReqDTO) {
         TargetUser targetUser = targetUserRepository.save(
                 entityAdapterService.getTargetUserFromDTO(customerId, null, null, targetUserReqDTO)
         );
@@ -70,6 +70,8 @@ public class TargetUserService implements ITargetUserService {
                         .twitterProfile(twitterProfile)
                         .build());
         targetUserRepository.setSocialMediaRef(sm.getId(), targetUser.getId());
+
+        return targetUser.getId();
     }
 
     @Override

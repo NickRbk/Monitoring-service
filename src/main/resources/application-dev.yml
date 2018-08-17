@@ -7,7 +7,7 @@ spring:
 twitter4j:
   debug: true
   oauth:
-    consumer-key:
-    consumer-secret:
-    access-token:
-    access-token-secret:
+    consumer-key: KOlEj3NCn0CL1mF068yJ4cPbF
+    consumer-secret: Iv7YykC4yyDGGezCBw4a7XMusvzB9RhmwHqMMfUbXMjIxotSrm
+    access-token: 998679054457933825-ZG5RPfuBBr6XGgg3cSfpjjP2SLV4ze7
+    access-token-secret: vJHFTVJ1WdrgIg0IccbSzviK1S9WKhMOqeYrwGfVen4Jr

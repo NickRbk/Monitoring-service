@@ -33,9 +33,9 @@ public class TargetUserController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping()
-    public void addTargetUser(@RequestBody @NotNull @Valid TargetUserReqDTO targetUserReqDTO,
+    public long addTargetUser(@RequestBody @NotNull @Valid TargetUserReqDTO targetUserReqDTO,
                         @RequestHeader(HEADER_STRING) String token) {
-        targetUserService.add(authService.getIdFromToken(token), targetUserReqDTO);
+        return targetUserService.add(authService.getIdFromToken(token), targetUserReqDTO);
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
