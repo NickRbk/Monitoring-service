@@ -26,4 +26,9 @@ public class SocialMediaController {
 
         return tweetService.getTweets(authService.getIdFromToken(token), key, direction, page, size);
     }
+
+    @GetMapping("/{alias}")
+    public boolean checkTwitterAlias(@PathVariable String alias) {
+        return tweetService.checkTwitterAlias(alias);
+    }
 }

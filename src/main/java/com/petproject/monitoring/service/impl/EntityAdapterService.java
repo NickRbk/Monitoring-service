@@ -134,7 +134,7 @@ public class EntityAdapterService implements IEntityAdapterService, SocialMediaC
     public TwitterUser getTwitterUserFromAPI(User u, boolean isTarget) {
         return TwitterUser.builder()
                 .userName(u.getName())
-                .screenName(u.getScreenName())
+                .screenName(u.getScreenName().toLowerCase())
                 .location(u.getLocation())
                 .description(u.getDescription())
                 .followersCount(u.getFollowersCount())

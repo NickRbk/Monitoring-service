@@ -38,15 +38,16 @@ public class TwitterProfileService implements ITwitterProfileService {
         TargetUser targetUser =
                 targetUserRepository.findByIdAndCustomerId(targetUserId, customerId).orElseThrow(NotFoundException::new);
         saveOrUpdateTwitterUser(smDTO);
-        twitterProfileRepository.setAlias(smDTO.getAlias(), targetUserId);
+        twitterProfileRepository.setAlias(smDTO.getAlias().toLowerCase(), targetUserId);
         twitterUserService.disableTwitterUserAsTargetIfNeeded(targetUser);
     }
 
     private void saveOrUpdateTwitterUser(SocialAliasReqDTO smDTO) {
-        Optional<TwitterUser> twitterUserOpt = twitterUserRepository.findByScreenName(smDTO.getAlias());
+        Optional<TwitterUser> twitterUserOpt = twitterUserRepository.findByScreenName(smDTO.getAlias().toLowerCase());
         if(!twitterUserOpt.isPresent()) {
             try {
                 User u = twitter.showUser(smDTO.getAlias());
+                System.out.println("ERROR HERE");
                 twitterUserRepository.save(entityAdapterService.getTwitterUserFromAPI(u, true));
             } catch (TwitterException e) {
                 log.error(e.getErrorMessage());

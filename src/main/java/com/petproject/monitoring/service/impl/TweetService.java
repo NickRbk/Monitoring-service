@@ -14,12 +14,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
 
 import java.util.List;
 
 @Service
 @AllArgsConstructor
 public class TweetService implements ITweetService {
+    private Twitter twitter;
     private TweetRepository tweetRepository;
     private ITargetUserService targetUserService;
     private IEnumUtilityService enumUtilityService;
@@ -29,6 +32,16 @@ public class TweetService implements ITweetService {
     public TweetsPageResDTO getTweets(Long customerId, String key, String direction, int page, int size) {
         Page<Tweet> tweets = getTweetsFromDB(customerId, key, direction, page, size);
         return entityAdapterService.getTweetsPageResDTOFromPageableEntity(tweets);
+    }
+
+    @Override
+    public boolean checkTwitterAlias(String alias) {
+        try {
+            twitter.timelines().getUserTimeline(alias);
+            return true;
+        } catch (TwitterException e) {
+            return false;
+        }
     }
 
     private Page<Tweet> getTweetsFromDB(Long customerId, String key, String direction, int page, int size) {
