@@ -3,7 +3,9 @@ spring:
     url: ${JDBC_DATABASE_URL}
     username: ${JDBC_DATABASE_USERNAME}
     password: ${JDBC_DATABASE_PASSWORD}
-
+#    url: jdbc:postgresql://localhost:32769/monitoring-service
+#    username: postgres
+#    password: postgres
 twitter4j:
   debug: true
   oauth:
