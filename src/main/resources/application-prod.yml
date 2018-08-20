@@ -10,3 +10,8 @@ twitter4j:
     consumer-secret: ${TWITTER_CONSUMER_SECRET}
     access-token: ${TWITTER_ACCESS_TOKEN}
     access-token-secret: ${TWITTER_ACCESS_TOKEN_SECRET}
+
+scheduler:
+  cron:
+    updater:
+      twitter: ${TWITTER_CRON_UPDATER}

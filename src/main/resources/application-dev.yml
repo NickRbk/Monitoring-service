@@ -11,3 +11,8 @@ twitter4j:
     consumer-secret:
     access-token:
     access-token-secret:
+
+scheduler:
+  cron:
+    updater:
+      twitter: * 0/30 * * * *
