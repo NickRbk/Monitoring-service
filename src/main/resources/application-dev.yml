@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:32769/monitoring-service
+    url: jdbc:postgresql://localhost:32770/monitoring-service
     username: postgres
     password: postgres
 
@@ -11,8 +11,3 @@ twitter4j:
     consumer-secret:
     access-token:
     access-token-secret:
-
-scheduler:
-  cron:
-    updater:
-      twitter: * 0/30 * * * *

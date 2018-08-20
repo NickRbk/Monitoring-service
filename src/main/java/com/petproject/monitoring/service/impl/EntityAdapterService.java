@@ -174,7 +174,7 @@ public class EntityAdapterService implements IEntityAdapterService, SocialMediaC
     }
 
     private TwitterUser getTwitterUser(User u) {
-        Optional<TwitterUser> twitterUser = twitterUserRepository.findByScreenName(u.getScreenName());
+        Optional<TwitterUser> twitterUser = twitterUserRepository.findByScreenName(u.getScreenName().toLowerCase());
         return twitterUser
                 .orElseGet(() -> twitterUserRepository.save(getTwitterUserFromAPI(u, false)));
     }
